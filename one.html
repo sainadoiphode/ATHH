@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Sports Insight | Sports Department, Government of India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --accent: #00e0ff;
+      --accent-soft: rgba(0, 224, 255, 0.1);
+      --accent-2: #ffb800;
+      --text: #f5f7ff;
+      --muted: #9ca3c7;
+      --danger: #ff5c7a;
+      --card-radius: 18px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #151b35 0, #050816 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout helpers */
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      background: rgba(3, 10, 40, 0.9);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(14px);
+      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.12), rgba(5, 8, 22, 0.98));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: linear-gradient(120deg, rgba(0, 224, 255, 0.16), rgba(0, 224, 255, 0.02));
+    }
+
+    /* Mobile nav */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+        position: absolute;
+        inset: 52px 16px auto 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050816;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+    }
+
+    /* Hero */
+    .hero {
+      padding: 40px 0 32px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.3fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 840px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(30px, 4vw, 40px);
+      font-weight: 700;
+      margin: 14px 0 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #00e0ff, #ffb800);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text {
+      font-size: 15px;
+      max-width: 560px;
+      color: var(--muted);
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0 22px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00e0ff, #007bff);
+      color: #02010a;
+      box-shadow: 0 18px 38px rgba(0, 224, 255, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent-soft);
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .metric-pill {
+      padding: 8px 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(1, 5, 25, 0.96);
+    }
+
+    /* Hero card (right) */
+    .hero-card {
+      border-radius: 24px;
+      padding: 16px 16px 18px;
+      background: radial-gradient(circle at top, rgba(0, 224, 255, 0.12), #050818);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at bottom, rgba(255, 184, 0, 0.1), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-card-body {
+      border-radius: 18px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+
+    .timeline-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00e0ff, #ffb800);
+      width: 72%;
+    }
+
+    .hero-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    /* Sections */
+    section {
+      padding: 30px 0;
+    }
+
+    section:nth-of-type(odd) {
+      background: linear-gradient(180deg, rgba(7, 11, 36, 0.92), rgba(5, 8, 22, 0.98));
+    }
+
+    section:nth-of-type(even) {
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.98), rgba(7, 11, 36, 0.96));
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 500px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .card-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--card-radius);
+      padding: 14px 14px 16px;
+      background: rgba(1, 5, 25, 0.97);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .field-group {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 780px) {
+      .field-group {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    label {
+      font-size: 11px;
+      margin-bottom: 3px;
+      display: block;
+      color: var(--muted);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(3, 8, 30, 0.98);
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(156, 163, 199, 0.7);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 9, 32, 0.9);
+      color: var(--muted);
+    }
+
+    .badge.good {
+      border-color: rgba(0, 224, 255, 0.65);
+      color: var(--accent);
+    }
+
+    .badge.warn {
+      border-color: rgba(255, 184, 0, 0.7);
+      color: var(--accent-2);
+    }
+
+    .badge.danger {
+      border-color: rgba(255, 92, 122, 0.7);
+      color: var(--danger);
+    }
+
+    .output-box {
+      border-radius: 14px;
+      padding: 10px 11px;
+      background: rgba(4, 9, 32, 0.95);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      font-size: 12px;
+      min-height: 52px;
+      color: var(--muted);
+    }
+
+    /* Sport tiles */
+    .sport-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .sport-tile {
+      border-radius: 14px;
+      padding: 10px;
+      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.12), #050818);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      justify-content: space-between;
+    }
+
+    .sport-tile h4 {
+      font-size: 13px;
+    }
+
+    .sport-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .btn-mini {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(1, 4, 22, 0.96);
+      padding: 4px 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* Map table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+    }
+
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    footer {
+      padding: 18px 0 20px;
+      background: #02010a;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="container nav">
+      <div>
+        <div class="logo">
+          <div class="logo-mark">AI</div>
+          <div>
+            <div>Sports Insight</div>
+            <div class="logo-sub">Sports Dept · Govt. of India</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero">Home</a>
+        <a href="#talent">Talent ID</a>
+        <a href="#injury">Health & Injury</a>
+        <a href="#dojo">Digital Dojo</a>
+        <a href="#mapping">Sports Mapping</a>
+        <a href="#scholarship">Scholarships</a>
+        <a href="#contact" class="nav-cta">Pilot Project</a>
+      </nav>
+
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="hero" class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="tag">
+          <span class="tag-dot"></span>
+          AI-powered sports governance
+        </div>
+        <h1 class="hero-title">
+          Bridging <span>Rural Talent</span> & National Sports Ecosystem.
+        </h1>
+        <p class="hero-text">
+          A unified AI platform for the Sports Department of the Government of India to
+          <b>identify talent</b>, <b>predict injuries</b>, provide <b>virtual coaching</b>,
+          map <b>village-level infrastructure</b>, and guide <b>scholarships & careers</b>.
+        </p>
+
+        <div class="hero-badges">
+          <div class="pill">AI-based Talent Identification System</div>
+          <div class="pill">Injury Prediction & Health Monitoring</div>
+          <div class="pill">Smart Village Sports Mapping</div>
+        </div>
+
+        <div class="hero-cta-row">
+          <button class="btn btn-primary" onclick="document.querySelector('#talent').scrollIntoView({behavior:'smooth'})">
+            Start Demo
+            <span>⟶</span>
+          </button>
+          <button class="btn btn-ghost" onclick="document.querySelector('#mapping').scrollIntoView({behavior:'smooth'})">
+            View Sports Map
+          </button>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-pill">
+            <b>Rural First</b><br />
+            Designed to surface hidden athletes from villages & talukas.
+          </div>
+          <div class="metric-pill">
+            <b>Data + Coaching</b><br />
+            Combines performance data with expert knowledge.
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Demo Card -->
+      <aside class="hero-card">
+        <div class="hero-card-head">
+          <div>
+            <div style="font-size:12px; font-weight:600;">Live Talent Scan Demo</div>
+            <div style="font-size:11px; color:var(--muted);">Upload clip → Immediate AI assessment</div>
+          </div>
+          <div class="chip">Prototype</div>
+        </div>
+        <div class="hero-card-body">
+          <div class="timeline">
+            <div class="timeline-row">
+              <span>Frame Analysis</span>
+              <span style="font-size:11px; color:var(--accent);">72% complete</span>
+            </div>
+            <div class="progress">
+              <div class="progress-fill"></div>
+            </div>
+
+            <div class="timeline-row">
+              <span>Movement Pattern Match</span>
+              <span style="font-size:11px; color:var(--muted);">Comparing with national standards...</span>
+            </div>
+          </div>
+          <div class="output-box" id="heroOutput">
+            Upload a short sprint / jump / throw clip in the Talent ID section.  
+            The AI engine will classify <b>best-fit sport</b> and flag if the athlete
+            is close to <b>district, state, or national benchmarks</b>.
+          </div>
+          <div class="hero-card-footer">
+            <span>✓ Privacy by design · Demo dataset only</span>
+            <span style="color:var(--accent-2);">Powered by Vision + Analytics</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- 1. AI-BASED TALENT IDENTIFICATION -->
+  <section id="talent">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Module 1
+          </div>
+          <h2 class="section-title">AI-Based Talent Identification System</h2>
+        </div>
+        <p class="section-sub">
+          Coaches, PE teachers, or parents can upload <b>training or competition videos</b>.
+          The system analyses physique, speed, balance and technique to suggest
+          <b>potential sport fit</b> and compare performance with <b>national standards</b>.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Left: Form -->
+        <div class="card">
+          <h3>Upload Athlete Performance Clip</h3>
+          <p>Ideal for rural schools, village grounds and district trials.</p>
+
+          <form id="talentForm">
+            <div class="field-group">
+              <div>
+                <label for="tName">Athlete Name</label>
+                <input type="text" id="tName" placeholder="e.g. Kavya Patil" required />
+              </div>
+              <div>
+                <label for="tAge">Age</label>
+                <input type="number" id="tAge" min="8" max="40" placeholder="15" required />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div>
+                <label for="tGender">Gender</label>
+                <select id="tGender">
+                  <option value="">Select</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                  <option>Other</option>
+                  <option>Prefer not to say</option>
+                </select>
+              </div>
+              <div>
+                <label for="tRegion">Region Type</label>
+                <select id="tRegion">
+                  <option value="">Select</option>
+                  <option>Rural</option>
+                  <option>Urban</option>
+                  <option>Tribal</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div>
+                <label for="tClip">Upload Video Clip</label>
+                <input type="file" id="tClip" accept="video/*" />
+                <div class="hint">
+                  Short 10–30 second clip of sprint, jump, throw or game movement.
+                </div>
+              </div>
+              <div>
+                <label for="tKnownSport">Current Sport (if any)</label>
+                <select id="tKnownSport">
+                  <option value="">Not yet fixed / exploring</option>
+                  <option>Athletics</option>
+                  <option>Football</option>
+                  <option>Kabaddi</option>
+                  <option>Wrestling</option>
+                  <option>Hockey</option>
+                  <option>Kho-Kho</option>
+                  <option>Volleyball</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;">
+              Analyse Talent
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: AI Output -->
+        <div class="card">
+          <h3>AI Talent Summary (Demo)</h3>
+          <p>
+            This is a <b>front-end prototype</b>. In a full system, backend AI models
+            would power this analysis.
+          </p>
+
+          <div class="output-box" id="talentOutput">
+            Fill the basic details and click <b>Analyse Talent</b> to view a mock AI
+            recommendation for best-fit sport and indicative potential.
+          </div>
+
+          <div class="badge-row">
+            <div class="badge good">Physique match analysis</div>
+            <div class="badge good">Movement pattern recognition</div>
+            <div class="badge warn">Benchmark vs. U17 national data</div>
+            <div class="badge">Rural vs. urban opportunity gap</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. INJURY PREDICTION & HEALTH MONITORING -->
+  <section id="injury">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Module 2
+          </div>
+          <h2 class="section-title">Injury Prediction & Health Monitoring Dashboard</h2>
+        </div>
+        <p class="section-sub">
+          Athletes log <b>sleep, diet, training volume and pain areas</b>. The dashboard
+          predicts <b>injury risk</b>, flags <b>overtraining</b> and suggests
+          <b>physiotherapy or rest days</b> before it is too late.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Inputs -->
+        <div class="card">
+          <h3>Daily Wellness Check-In</h3>
+          <p>Designed to be filled in under 60 seconds by athletes or coaches.</p>
+
+          <form id="injuryForm">
+            <div class="field-group">
+              <div>
+                <label for="sleepHours">Sleep (last night)</label>
+                <input type="number" id="sleepHours" min="0" max="14" placeholder="7" />
+                <div class="hint">Ideal range: 7–9 hours.</div>
+              </div>
+              <div>
+                <label for="trainingHours">Training Hours (today)</label>
+                <input type="number" id="trainingHours" min="0" max="10" placeholder="2.5" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div>
+                <label for="dietQuality">Diet Quality</label>
+                <select id="dietQuality">
+                  <option>Balanced</option>
+                  <option>High Junk / Low Protein</option>
+                  <option>Skipped Meals</option>
+                  <option>Hydration Low</option>
+                </select>
+              </div>
+              <div>
+                <label for="painAreas">Pain / Discomfort Areas</label>
+                <input type="text" id="painAreas" placeholder="e.g. right knee, lower back" />
+              </div>
+            </div>
+
+            <label for="mood">Energy / Mood</label>
+            <select id="mood" style="margin-bottom:6px;">
+              <option>Fresh</option>
+              <option>Normal</option>
+              <option>Heavy / Fatigued</option>
+              <option>Very tired</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;">
+              Predict Injury Risk
+            </button>
+          </form>
+        </div>
+
+        <!-- Outputs -->
+        <div class="card">
+          <h3>Risk & Recovery Snapshot (Demo)</h3>
+
+          <div class="output-box" id="injuryOutput">
+            Once you submit today’s wellness check-in, the AI module will highlight:
+            <ul style="margin-top:6px; padding-left:18px;">
+              <li>Overall injury risk (Low / Medium / High)</li>
+              <li>Key warning indicators (sleep, overload, pain patterns)</li>
+              <li>Suggested action: rest / light training / physiotherapy</li>
+            </ul>
+          </div>
+
+          <div class="badge-row">
+            <div class="badge good">Sleep & load balance</div>
+            <div class="badge warn">Overtraining alerts</div>
+            <div class="badge danger">Injury hot-spot detection</div>
+            <div class="badge">Physio & doctor escalation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. VIRTUAL SPORTS TRAINING ROOMS -->
+  <section id="dojo">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Module 3
+          </div>
+          <h2 class="section-title">Virtual Sports Training Rooms – “Digital DOJO”</h2>
+        </div>
+        <p class="section-sub">
+          Players in remote areas can access <b>3D training animations</b>,
+          <b>position correction tips</b>, <b>rules</b>, and <b>fitness drills</b>
+          for each sport—without needing a full-time coach physically present.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Select a Sport</h3>
+          <p>Each “Digital DOJO” provides visual guidance and drill libraries.</p>
+
+          <div class="sport-grid">
+            <div class="sport-tile">
+              <h4>⚡ Athletics Sprint DOJO</h4>
+              <div class="sport-meta">
+                Start mechanics · stride length · finish technique.
+              </div>
+              <button class="btn-mini" type="button" onclick="setDojo('Athletics Sprint')">
+                Enter Dojo
+              </button>
+            </div>
+
+            <div class="sport-tile">
+              <h4>⚽ Football DOJO</h4>
+              <div class="sport-meta">
+                Passing grids · first touch · press & cover drills.
+              </div>
+              <button class="btn-mini" type="button" onclick="setDojo('Football')">
+                Enter Dojo
+              </button>
+            </div>
+
+            <div class="sport-tile">
+              <h4>🤼 Wrestling DOJO</h4>
+              <div class="sport-meta">
+                Stance, sprawl, takedown entries, safe falling techniques.
+              </div>
+              <button class="btn-mini" type="button" onclick="setDojo('Wrestling')">
+                Enter Dojo
+              </button>
+            </div>
+
+            <div class="sport-tile">
+              <h4>🏏 Cricket DOJO</h4>
+              <div class="sport-meta">
+                Grip · stance · front-foot & back-foot shots · bowling run-up.
+              </div>
+              <button class="btn-mini" type="button" onclick="setDojo('Cricket')">
+                Enter Dojo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Training Room Preview</h3>
+          <div class="output-box" id="dojoOutput">
+            Choose any sport on the left. The Digital DOJO will load:
+            <ul style="margin-top:6px; padding-left:18px;">
+              <li>3D animation of correct body position</li>
+              <li>Common mistakes with side-by-side comparison</li>
+              <li>Beginner, intermediate and advanced drill progressions</li>
+              <li>Rule explanations and foul examples</li>
+            </ul>
+          </div>
+          <div class="hint" style="margin-top:8px;">
+            In a full implementation, this block would embed 3D/AR animations and
+            instructional video playlists.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SMART VILLAGE SPORTS MAPPING -->
+  <section id="mapping">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Module 4
+          </div>
+          <h2 class="section-title">Smart Village Sports Mapping</h2>
+        </div>
+        <p class="section-sub">
+          Maps every <b>village / taluka’s sports facilities</b>, and suggests
+          which <b>sports can be developed</b> based on the type of ground
+          available—helping the Government to target <b>infrastructure gaps</b>.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Mapping Inputs -->
+        <div class="card">
+          <h3>Locate a Village / Taluka</h3>
+          <p>Use this interface to plan district-level sports infrastructure.</p>
+
+          <form id="mapForm">
+            <div class="field-group">
+              <div>
+                <label for="state">State / UT</label>
+                <input type="text" id="state" placeholder="e.g. Maharashtra" />
+              </div>
+              <div>
+                <label for="district">District</label>
+                <input type="text" id="district" placeholder="e.g. Pune" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div>
+                <label for="village">Village / Taluka</label>
+                <input type="text" id="village" placeholder="e.g. Baramati" />
+              </div>
+              <div>
+                <label for="groundType">Ground Availability</label>
+                <select id="groundType">
+                  <option>Open ground (mud)</option>
+                  <option>Open ground (grass)</option>
+                  <option>Indoor hall</option>
+                  <option>No dedicated ground yet</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;">
+              Generate Sports Map Suggestion
+            </button>
+          </form>
+        </div>
+
+        <!-- Mapping Outputs -->
+        <div class="card">
+          <h3>Facility Snapshot & Suggested Sports (Demo)</h3>
+
+          <div class="output-box" id="mapOutput">
+            Submit a location to see:
+            <ul style="margin-top:6px; padding-left:18px;">
+              <li>Existing basic facilities (as per local survey)</li>
+              <li>Recommended sports to promote</li>
+              <li>Priority level for government investment</li>
+            </ul>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Facility</th>
+                <th>Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="mapTableBody">
+              <tr>
+                <td>Multi-purpose ground</td>
+                <td>Unknown</td>
+                <td>Run survey to confirm size & safety.</td>
+              </tr>
+              <tr>
+                <td>Indoor hall</td>
+                <td>Unknown</td>
+                <td>Check availability for badminton / kabaddi.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SCHOLARSHIP & CAREER PATHWAY RECOMMENDER -->
+  <section id="scholarship">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Module 5
+          </div>
+          <h2 class="section-title">Scholarship & Career Pathway Recommender</h2>
+        </div>
+        <p class="section-sub">
+          Students fill a simple profile and the system suggests
+          <b>government scholarships</b>, <b>sports quotas</b>,
+          <b>academies</b> and <b>career paths</b>, turning raw talent into
+          long-term opportunity.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Profile form -->
+        <div class="card">
+          <h3>Student / Athlete Profile</h3>
+
+          <form id="scholarForm">
+            <div class="field-group">
+              <div>
+                <label for="sLevel">Current Level</label>
+                <select id="sLevel">
+                  <option>School (8th–10th)</option>
+                  <option>Junior College (11th–12th)</option>
+                  <option>Undergraduate</option>
+                  <option>Postgraduate</option>
+                </select>
+              </div>
+              <div>
+                <label for="sAchievement">Best Sports Achievement</label>
+                <select id="sAchievement">
+                  <option>School / Local level</option>
+                  <option>Taluka / Block level</option>
+                  <option>District level</option>
+                  <option>State level</option>
+                  <option>National level</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div>
+                <label for="sSport">Primary Sport</label>
+                <input type="text" id="sSport" placeholder="e.g. Kabaddi" />
+              </div>
+              <div>
+                <label for="sIncome">Family Income (approx.)</label>
+                <select id="sIncome">
+                  <option>&lt; ₹1,00,000</option>
+                  <option>₹1,00,000 – ₹3,00,000</option>
+                  <option>₹3,00,000 – ₹6,00,000</option>
+                  <option>&gt; ₹6,00,000</option>
+                </select>
+              </div>
+            </div>
+
+            <label for="sGoal">Career Goal (optional)</label>
+            <textarea id="sGoal" placeholder="e.g. Get into a college with sports quota for B.A., play at state level, become coach later."></textarea>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;">
+              Find Scholarships & Pathways
+            </button>
+          </form>
+        </div>
+
+        <!-- Recommendation output -->
+        <div class="card">
+          <h3>Suggested Pathways (Demo)</h3>
+
+          <div class="output-box" id="scholarOutput">
+            The recommendation engine will list:
+            <ul style="margin-top:6px; padding-left:18px;">
+              <li>Relevant central & state sports scholarships</li>
+              <li>Colleges with sports quota for the chosen sport</li>
+              <li>Nearby academies or SAI centres</li>
+              <li>Suggested pathway: player · coach · official · sports science etc.</li>
+            </ul>
+          </div>
+
+          <div class="badge-row">
+            <div class="badge good">Merit-based schemes</div>
+            <div class="badge good">Need-based financial support</div>
+            <div class="badge warn">Regional academy mapping</div>
+            <div class="badge">Long-term career counselling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / PILOT SECTION -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Pilot Proposal
+          </div>
+          <h2 class="section-title">Pilot Implementation – Sports Department, Government of India</h2>
+        </div>
+        <p class="section-sub">
+          This web application is designed as a <b>conceptual prototype</b> for a
+          national-level AI platform. It can be piloted in a <b>single district</b>
+          first and then scaled across the country.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Request a Pilot / Demo</h3>
+        <div class="field-group">
+          <div>
+            <label>Department / Institution</label>
+            <input type="text" placeholder="e.g. District Sports Office, Nashik" />
+          </div>
+          <div>
+            <label>Official Email</label>
+            <input type="email" placeholder="e.g. sports.dso@gov.in" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div>
+            <label>Preferred Pilot Focus</label>
+            <select>
+              <option>AI Talent Identification</option>
+              <option>Health & Injury Monitoring</option>
+              <option>Digital DOJO Training Rooms</option>
+              <option>Village Sports Mapping</option>
+              <option>Scholarship & Career Guidance</option>
+              <option>Full Stack (All 5 Modules)</option>
+            </select>
+          </div>
+          <div>
+            <label>Region</label>
+            <input type="text" placeholder="State & District" />
+          </div>
+        </div>
+
+        <button class="btn btn-primary" type="button">
+          Submit Interest (Prototype)
+        </button>
+        <div class="hint" style="margin-top:8px;">
+          This is a front-end demonstration. In a real deployment, this would
+          connect to a secure government backend and AI services.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        © 2025 · AI Sports Insight · Concept design for Sports Department, Government of India.
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Back to top</a>
+        <a href="#talent">Talent ID</a>
+        <a href="#mapping">Sports Mapping</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BASIC INTERACTIVITY (DEMO LOGIC) -->
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
+    });
+
+    // 1. Talent Identification mock logic
+    document.getElementById('talentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('tName').value || 'Athlete';
+      const age = parseInt(document.getElementById('tAge').value || '0', 10);
+      const region = document.getElementById('tRegion').value || 'Region';
+      const knownSport = document.getElementById('tKnownSport').value;
+
+      let suggested = 'Multi-sport exploration (general athletics, basic games).';
+      if (age <= 13) {
+        suggested = 'Fundamental movement skills with focus on fun multi-sport exposure.';
+      } else if (age >= 14 && age <= 18) {
+        suggested = 'Speed & agility sports like athletics sprint, football, kabaddi.';
+      } else if (age > 18) {
+        suggested = 'Sport specialisation with structured strength & conditioning.';
+      }
+
+      if (knownSport) {
+        suggested = `Refine and specialise further in <b>${knownSport}</b> with position-specific drills.`;
+      }
+
+      const output = `
+        <b>${name}</b> (${age} yrs, ${region}) – demo AI assessment:<br><br>
+        <b>Best-fit sport direction (indicative):</b> ${suggested}<br><br>
+        <b>Benchmark vs. national standards (mock):</b><br>
+        • Speed / agility: <b>Promising</b> – needs structured training.<br>
+        • Strength / power: <b>Developing</b> – introduce basic S&C.<br>
+        • Technique: <b>Coach-guided corrections recommended</b> using Digital DOJO.<br><br>
+        <i>Note: This is sample logic for the project. Actual deployment will use real video analytics models.</i>
+      `;
+      document.getElementById('talentOutput').innerHTML = output;
+    });
+
+    // 2. Injury Prediction mock logic
+    document.getElementById('injuryForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const sleep = parseFloat(document.getElementById('sleepHours').value || '0');
+      const training = parseFloat(document.getElementById('trainingHours').value || '0');
+      const diet = document.getElementById('dietQuality').value;
+      const pain = document.getElementById('painAreas').value.trim();
+      const mood = document.getElementById('mood').value;
+
+      let risk = 'Low';
+      let advice = 'Continue normal training with standard warm-up and cool-down.';
+      const flags = [];
+
+      if (sleep < 6 || training > 4) {
+        risk = 'Medium';
+        advice = 'Reduce volume slightly, focus on recovery (sleep, hydration, stretching).';
+        flags.push('Load & recovery imbalance detected.');
+      }
+      if (sleep < 5 || training > 5 || pain) {
+        risk = 'High';
+        advice = 'Shift to light / technical training only. Consider physiotherapy screening.';
+        flags.push('High strain with possible pain points.');
+      }
+      if (diet !== 'Balanced') {
+        flags.push('Diet / hydration quality needs improvement.');
+      }
+      if (mood === 'Very tired') {
+        flags.push('Self-reported fatigue is high.');
+      }
+
+      const output = `
+        <b>Injury Risk Level (demo):</b> <span style="color:${risk === 'High' ? '#ff5c7a' : risk === 'Medium' ? '#ffb800' : '#00e0ff'}">${risk}</span><br><br>
+        <b>Key factors considered:</b><br>
+        • Sleep: ${sleep} hours<br>
+        • Training today: ${training} hours<br>
+        • Diet quality: ${diet}<br>
+        • Pain areas: ${pain || 'None reported'}<br>
+        • Energy / mood: ${mood}<br><br>
+        <b>AI Advice (prototype):</b><br>${advice}<br><br>
+        <b>Flags:</b><br>
+        ${flags.length ? '• ' + flags.join('<br>• ') : 'No major red flags today.'}<br><br>
+        <i>This is sample rule-based logic for the project report. A full model would learn from large athlete datasets.</i>
+      `;
+      document.getElementById('injuryOutput').innerHTML = output;
+    });
+
+    // 3. Digital DOJO mock
+    function setDojo(sport) {
+      const output = `
+        <b>${sport} – Digital DOJO (Preview)</b><br><br>
+        • 3D animation playlist for key skills in ${sport}.<br>
+        • Slow-motion breakdown showing correct body angles.<br>
+        • "Common mistakes" clips recorded from real matches.<br>
+        • Drill library sorted by Beginner / Intermediate / Advanced.<br>
+        • Printable PDF session plans for PE teachers & coaches.<br><br>
+        <i>In the real system, this area will embed 3D / video content for interactive learning.</i>
+      `;
+      document.getElementById('dojoOutput').innerHTML = output;
+    }
+    window.setDojo = setDojo;
+
+    // 4. Smart Village Sports Map mock
+    document.getElementById('mapForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const state = document.getElementById('state').value || 'Selected State';
+      const district = document.getElementById('district').value || 'Selected District';
+      const village = document.getElementById('village').value || 'Selected Village / Taluka';
+      const ground = document.getElementById('groundType').value;
+
+      let recommendedSports = 'General physical literacy & school-level athletics.';
+      if (ground.includes('mud')) {
+        recommendedSports = 'Kabaddi, kho-kho, athletics (sprints), rural games.';
+      } else if (ground.includes('grass')) {
+        recommendedSports = 'Football, hockey (basic), athletics, kho-kho.';
+      } else if (ground.includes('Indoor')) {
+        recommendedSports = 'Badminton, table tennis, kabaddi, indoor fitness.';
+      } else if (ground.includes('No dedicated')) {
+        recommendedSports = 'Urgent priority: identify open land and start mini-sports hubs.';
+      }
+
+      const priority =
+        ground.includes('No dedicated') ? 'High – create first community sports ground.' : 'Medium – upgrade existing facilities.';
+
+      const output = `
+        <b>Location:</b> ${village}, ${district}, ${state}<br>
+        <b>Ground type:</b> ${ground}<br><br>
+        <b>Recommended sports focus:</b> ${recommendedSports}<br>
+        <b>Investment priority (demo):</b> ${priority}<br><br>
+        <i>When connected to GIS and census data, this module can generate a real national Sports Infrastructure Map.</i>
+      `;
+      document.getElementById('mapOutput').innerHTML = output;
+
+      const tableBody = document.getElementById('mapTableBody');
+      tableBody.innerHTML = `
+        <tr>
+          <td>Community ground</td>
+          <td>${ground.includes('No dedicated') ? 'Not available' : 'Available (basic)'}</td>
+          <td>${ground.includes('No dedicated') ? 'Acquire / reserve land for first sports ground.' : 'Level, mark and maintain surface.'}</td>
+        </tr>
+        <tr>
+          <td>Indoor facilities</td>
+          <td>${ground.includes('Indoor') ? 'Available' : 'Not available'}</td>
+          <td>${ground.includes('Indoor') ? 'Can host badminton / TT / kabaddi.' : 'Explore school halls or panchayat buildings.'}</td>
+        </tr>
+        <tr>
+          <td>Coaching staff</td>
+          <td>Unknown</td>
+          <td>Connect with state federation & hire/assign local coaches.</td>
+        </tr>
+      `;
+    });
+
+    // 5. Scholarship recommender mock
+    document.getElementById('scholarForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const level = document.getElementById('sLevel').value;
+      const achievement = document.getElementById('sAchievement').value;
+      const sport = document.getElementById('sSport').value || 'your sport';
+      const income = document.getElementById('sIncome').value;
+
+      const scholarships = [];
+      if (income.includes('<') || income.includes('1,00,000 – 3,00,000')) {
+        scholarships.push('Need-based state sports scholarship schemes.');
+      }
+      if (achievement.includes('District') || achievement.includes('State') || achievement.includes('National')) {
+        scholarships.push('Performance-based central / SAI scholarships.');
+      }
+      if (level.includes('Junior') || level.includes('School')) {
+        scholarships.push('School & junior college sports quota for XI / FY.');
+      } else {
+        scholarships.push('Undergraduate sports quota in universities and autonomous colleges.');
+      }
+
+      const output = `
+        <b>Profile summary (demo):</b><br>
+        • Level: ${level}<br>
+        • Best achievement: ${achievement}<br>
+        • Sport: ${sport}<br>
+        • Family income: ${income}<br><br>
+        <b>Suggested directions:</b><br>
+        • ${scholarships.join('<br>• ')}<br><br>
+        <b>Example pathways:</b><br>
+        • Short-term: secure seat via sports quota while continuing to train in ${sport}.<br>
+        • Medium-term: aim for state / national camps and SAI-linked academies.<br>
+        • Long-term: explore roles like coach, PE teacher, sports manager, physio or analyst depending on interest.<br><br>
+        <i>Actual deployment would integrate real scholarship databases and college / academy listings.</i>
+      `;
+      document.getElementById('scholarOutput').innerHTML = output;
+    });
+  </script>
+</body>
+</html>

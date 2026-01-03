@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AthletesPulse | Scholarships & Funding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --bg: #050816;
+      --bg-alt: #080d1f;
+      --card-bg: #050818;
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --accent: #6bff90;
+      --accent-2: #ffd66b;
+      --accent-soft: rgba(107, 255, 144, 0.18);
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius-xl: 18px;
+      --transition: all 0.2s ease;
+    }
+
+    /* ===== BASE STYLES ===== */
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #17252f 0, #050816 45%, #02010a 100%) !important;
+      color: var(--text) !important;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Override ALL Bootstrap text to be light */
+    body, h1, h2, h3, h4, h5, h6,
+    .card, .navbar, .btn:not(.btn-gradient),
+    .form-control, .form-select, .alert,
+    .badge:not(.bg-primary):not(.bg-success):not(.bg-warning):not(.bg-danger):not(.bg-info),
+    p, span, div, a:not(.text-accent) {
+      color: var(--text) !important;
+    }
+
+    /* Custom muted text */
+    .text-muted-custom {
+      color: var(--muted) !important;
+    }
+
+    /* ===== CUSTOM UTILITIES ===== */
+    .rounded-xl {
+      border-radius: var(--radius-xl) !important;
+    }
+
+    .bg-custom-dark {
+      background: rgba(3, 6, 24, 0.96) !important;
+    }
+
+    .text-accent {
+      color: var(--accent) !important;
+    }
+
+    .text-accent-2 {
+      color: var(--accent-2) !important;
+    }
+
+    .bg-accent-soft {
+      background: var(--accent-soft) !important;
+    }
+
+    .border-accent {
+      border-color: var(--accent) !important;
+    }
+
+    .shadow-soft {
+      box-shadow: var(--shadow-soft) !important;
+    }
+
+    /* ===== NAVBAR OVERRIDES ===== */
+    .navbar-custom {
+      backdrop-filter: blur(14px) !important;
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(5, 8, 22, 0.9)) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    }
+
+    .navbar-toggler {
+      border-color: var(--text) !important;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    .navbar-nav .nav-link {
+      padding: 8px 14px !important;
+      border-radius: 999px !important;
+      color: var(--muted) !important;
+      transition: var(--transition) !important;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+      background: var(--accent-soft) !important;
+      color: var(--accent) !important;
+    }
+
+    .navbar-nav .nav-link.active {
+      background: var(--accent) !important;
+      color: #02010a !important;
+      font-weight: 600 !important;
+      box-shadow: 0 0 20px rgba(107, 255, 144, 0.7) !important;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero-section {
+      padding: 28px 0 !important;
+      background:
+        radial-gradient(circle at top left, rgba(107, 255, 144, 0.2), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(255, 214, 107, 0.2), transparent 60%),
+        linear-gradient(180deg, rgba(10, 16, 24, 0.96), rgba(5, 8, 22, 0.98)) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .hero-tag {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      font-size: 12px !important;
+      padding: 6px 14px !important;
+      border-radius: 999px !important;
+      border: 1px solid var(--accent-soft) !important;
+      color: var(--accent) !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.12em !important;
+      background: rgba(3, 6, 24, 0.9) !important;
+    }
+
+    .hero-dot {
+      width: 8px !important;
+      height: 8px !important;
+      border-radius: 50% !important;
+      background: var(--accent) !important;
+      box-shadow: 0 0 12px rgba(107, 255, 144, 0.9) !important;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 4vw, 42px) !important;
+      font-weight: 700 !important;
+      margin: 18px 0 12px !important;
+      line-height: 1.2 !important;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #6bff90, #ffd66b) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      color: transparent !important;
+    }
+
+    .hero-pills .badge {
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      background: rgba(0, 0, 0, 0.5) !important;
+      color: var(--muted) !important;
+      font-weight: normal !important;
+      font-size: 12px !important;
+    }
+
+    /* ===== CUSTOM BUTTONS ===== */
+    .btn-gradient {
+      background: linear-gradient(135deg, #6bff90, #ffd66b) !important;
+      color: #02010a !important;
+      border: none !important;
+      box-shadow: 0 12px 28px rgba(107, 255, 144, 0.4) !important;
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 18px 38px rgba(107, 255, 144, 0.6) !important;
+      color: #02010a !important;
+    }
+
+    .btn-outline-accent {
+      background: transparent !important;
+      border: 1px solid var(--accent) !important;
+      color: var(--accent) !important;
+    }
+
+    .btn-outline-accent:hover {
+      background: rgba(107, 255, 144, 0.1) !important;
+      color: var(--accent) !important;
+    }
+
+    /* ===== FILTERS ===== */
+    .filters-bar {
+      padding: 18px 0 !important;
+      background: #050816 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .filter-select {
+      background: rgba(1, 4, 20, 0.98) !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      color: var(--text) !important;
+      outline: none !important;
+    }
+
+    .filter-select:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 2px var(--accent-soft) !important;
+    }
+
+    /* Override Bootstrap form colors */
+    .form-control, .form-select {
+      background-color: rgba(1, 4, 20, 0.98) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      color: var(--text) !important;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background-color: rgba(1, 4, 20, 0.98) !important;
+      border-color: var(--accent) !important;
+      color: var(--text) !important;
+      box-shadow: 0 0 0 2px var(--accent-soft) !important;
+    }
+
+    /* ===== SCHOLARSHIP CARDS ===== */
+    .sch-card {
+      border-radius: 16px !important;
+      background: rgba(5, 8, 30, 0.98) !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      transition: var(--transition) !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .sch-card::before {
+      content: "₹" !important;
+      position: absolute !important;
+      top: -15px !important;
+      right: 15px !important;
+      font-size: 48px !important;
+      font-weight: 700 !important;
+      color: rgba(107, 255, 144, 0.12) !important;
+      text-shadow: 0 0 20px rgba(107, 255, 144, 0.6) !important;
+      pointer-events: none !important;
+    }
+
+    .sch-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+      border-color: var(--accent) !important;
+    }
+
+    .sch-tag {
+      padding: 4px 10px !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+      font-size: 11px !important;
+    }
+
+    .sch-tag.level {
+      border-color: rgba(107, 255, 144, 0.8) !important;
+      color: var(--accent) !important;
+    }
+
+    .sch-tag.type {
+      border-color: rgba(255, 214, 107, 0.8) !important;
+      color: var(--accent-2) !important;
+    }
+
+    .sch-pill {
+      padding: 4px 10px !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      font-size: 11px !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 20px 0 !important;
+      background: #02010a !important;
+      color: var(--muted) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+    }
+
+    /* Override Bootstrap card */
+    .card {
+      background-color: transparent !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    /* Override Bootstrap alert */
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1) !important;
+      border-color: rgba(255, 193, 7, 0.3) !important;
+      color: #ff9b9b !important;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 28px !important;
+      }
+      
+      .filter-select {
+        width: 100% !important;
+      }
+      
+      .navbar-nav {
+        background: rgba(5, 8, 22, 0.95) !important;
+        padding: 15px !important;
+        border-radius: 10px !important;
+        margin-top: 10px !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-light">
+  <!-- NAVBAR - USING BOOTSTRAP -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+      <div class="container">
+        <!-- Logo/Brand -->
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+          <img src="logo.jpg" alt="AthletesPulse logo" class="rounded-circle" style="width: 36px; height: 36px; border: 2px solid var(--accent); box-shadow: 0 0 16px rgba(107, 255, 144, 0.8);">
+          <div>
+            <div class="fw-bold">AthletesPulse</div>
+            <div class="text-muted-custom" style="font-size: 12px;">Scholarships & Funding</div>
+          </div>
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto gap-2">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dojo.html">Digital Dojo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="talent.html">Fitness Tests</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="health.html">Health Hub</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="diet.html">Diet</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="scholarships.html">Scholarships</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pune-map.html">India Sports</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION - USING BOOTSTRAP GRID -->
+  <section class="hero-section pt-5 mt-5">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <!-- Left Column -->
+        <div class="col-lg-7">
+          <div class="hero-tag mb-3">
+            <span class="hero-dot"></span>
+            Turn medals into money support
+          </div>
+          <h1 class="hero-title">
+            A quick map of <span>sports scholarships</span> that actually give you money.
+          </h1>
+          <p class="mb-4 text-muted-custom">
+            From <b>Khelo India</b> to <b>state scholarships</b> and <b>PSU schemes</b>, this page gives a high-level view of
+            where Indian student athletes can get funding – especially useful if you're from places like Pune and
+            planning serious sport along with college.
+          </p>
+          
+          <div class="hero-pills d-flex flex-wrap gap-2 mb-4">
+            <span class="badge">Government & PSU schemes</span>
+            <span class="badge">School · College · Elite athletes</span>
+            <span class="badge">Filter by level and scholarship type</span>
+          </div>
+          
+          <div class="text-muted-custom small">
+            Amounts and rules here are <b>approximate and summarised</b>. For real applications, students should always
+            check the latest official notification and last date before applying.
+          </div>
+        </div>
+
+        <!-- Right Column - Card -->
+        <div class="col-lg-5">
+          <div class="card bg-custom-dark border-accent shadow-soft rounded-xl p-4">
+            <div class="row g-3">
+              <div class="col-md-7">
+                <h5 class="text-accent fw-bold mb-3">How this page helps your project</h5>
+                <p class="small text-muted-custom mb-3">
+                  We are not building an online form here. Instead, AthletesPulse acts like a
+                  <b>counselling board</b>:
+                </p>
+                <ul class="small text-muted-custom ps-3 mb-0">
+                  <li class="mb-2">Shows big-picture schemes students should know about</li>
+                  <li class="mb-2">Highlights whether they are school / college / elite level</li>
+                  <li>Keeps a small "money line" so students see the scale of support</li>
+                </ul>
+              </div>
+              <div class="col-md-5">
+                <div class="position-relative rounded overflow-hidden border border-white border-opacity-25" style="height: 150px; background: #02010a;">
+                  <img src="scholar.jpeg" alt="Scholarship graphic" class="w-100 h-100 object-fit-cover opacity-75">
+                  <div class="position-absolute bottom-0 start-0 small bg-dark bg-opacity-75 border border-white border-opacity-50 rounded-pill m-2 p-1 px-2">
+                    Scholarships = medals + marks + money
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS SECTION - USING BOOTSTRAP FORM COMPONENTS -->
+  <section class="filters-bar">
+    <div class="container">
+      <div class="row align-items-center justify-content-between g-3">
+        <!-- Filter Controls -->
+        <div class="col-md-8">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <span class="small fw-medium text-muted-custom">Filter suggestions:</span>
+            <select id="levelFilter" class="form-select filter-select" style="max-width: 200px;">
+              <option value="all">Any level</option>
+              <option value="school">School (till 12th)</option>
+              <option value="college">College / University</option>
+              <option value="elite">Elite / National</option>
+            </select>
+            <select id="typeFilter" class="form-select filter-select" style="max-width: 200px;">
+              <option value="all">Any type</option>
+              <option value="govt">Govt of India</option>
+              <option value="state">State Govt</option>
+              <option value="psu">PSU / Corporate</option>
+              <option value="private">Private / University</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="col-md-4">
+          <div class="d-flex gap-2 justify-content-md-end">
+            <button class="btn btn-gradient px-4" id="applyFilter">
+              Apply filters
+            </button>
+            <button class="btn btn-outline-accent px-4" id="resetFilter">
+              Show all
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filter Note -->
+      <div class="small mt-3 text-muted-custom" id="filterNote">
+        Currently showing <b>all levels & types</b>. Use filters to see only, for example, "School + State Govt".
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT - USING BOOTSTRAP GRID -->
+  <main class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Scholarship List Column -->
+        <div class="col-lg-12">
+          <div class="card bg-custom-dark border-white border-opacity-25 shadow-soft rounded-xl p-4">
+            <h2 class="fw-bold mb-2">Key Indian sports scholarships & support</h2>
+            <p class="mb-4 text-muted-custom">
+              Not a complete list for the whole country, but a <b>starter pack</b> of schemes students from places like
+              Maharashtra / Pune commonly hear about.
+            </p>
+
+            <div class="sch-list" id="schList">
+              <!-- KHELO INDIA Scholarship Card -->
+              <article class="sch-card p-4 mb-3" data-level="elite" data-type="govt">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">Khelo India Athlete Scholarship</h5>
+                    <p class="small mb-2 text-muted-custom">Ministry of Youth Affairs & Sports / Sports Authority of India</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: Elite youth (national)</span>
+                      <span class="sch-tag type">Type: Govt of India</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: training + support worth ~₹6.28 lakh/year, including ~₹1.2 lakh yearly out-of-pocket allowance (as per latest scheme documents).
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> Khelo India Athletes selected from national-level competitions and talent
+                    identification camps. Once selected, athletes train at recognised academies with hostel, coaching,
+                    competition exposure and a monthly allowance paid directly to their bank account.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> students from rural or small-town backgrounds who perform well can
+                    basically get <b>full training + stay covered</b> instead of paying themselves.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: serious medal prospects</span>
+                  <span class="sch-pill">Check: kheloindia.gov.in / MYAS notices</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "Khelo India Athlete Scholarship latest notice"</a>
+                </div>
+              </article>
+
+              <!-- MAHARASHTRA SCHOOL SPORTS SCHOLARSHIP -->
+              <article class="sch-card p-4 mb-3" data-level="school" data-type="state">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">Maharashtra Sports Scholarship (School Games)</h5>
+                    <p class="small mb-2 text-muted-custom">Department of Sports & Youth Services, Govt of Maharashtra</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: School (till 12th)</span>
+                      <span class="sch-tag type">Type: State Govt</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: annual scholarship amounts from a few thousand rupees upwards based on place (1st/2nd/3rd/participation) in school/national-level competitions.
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> Students who secure positions at School Games, National School Games and sometimes
+                    international school-level competitions. Amounts differ by medal and level but are paid directly as a
+                    scholarship for that year.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> many Maharashtra students don't know that <b>school medals can convert
+                    to yearly scholarship money</b>, which can help with books, coaching or hostel costs.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: strong school players</span>
+                  <span class="sch-pill">Check: mahasports.maharashtra.gov.in (scholarship section)</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "Maharashtra school sports scholarship latest GR"</a>
+                </div>
+              </article>
+
+              <!-- MAHARASHTRA / KHELO INDIA CASH AWARDS -->
+              <article class="sch-card p-4 mb-3" data-level="school" data-type="state">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">State Cash Awards for Khelo India Medalists</h5>
+                    <p class="small mb-2 text-muted-custom">Govt of Maharashtra (for medal winners representing state)</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: School / Youth</span>
+                      <span class="sch-tag type">Type: State Govt</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: one-time cash awards in lakh range for gold/silver/bronze at Khelo India youth events (amounts depend on year and state policy).
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> Athletes who win medals at Khelo India Youth / University Games while representing
+                    Maharashtra. Separate from central Khelo India athlete support, this is a <b>state-level reward</b>.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> shows students that <b>big performances can create real prize money</b>,
+                    which families often reinvest into equipment, coaching or travel.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: medal targets</span>
+                  <span class="sch-pill">Check: state GRs, sports department news</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "Maharashtra cash award Khelo India medalist"</a>
+                </div>
+              </article>
+
+              <!-- ONGC SPORTS SCHOLARSHIP -->
+              <article class="sch-card p-4 mb-3" data-level="college" data-type="psu">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">ONGC Sports Scholarship Scheme</h5>
+                    <p class="small mb-2 text-muted-custom">Oil and Natural Gas Corporation Ltd. (ONGC)</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: Mostly 15–20 yrs</span>
+                      <span class="sch-tag type">Type: PSU / Corporate</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: monthly stipend for selected players, different slabs for national/international performers (exact amount as per that year's notification).
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> Young athletes with strong national performance who need financial help to continue
+                    training. Applications are usually online, with a list of supported sports and age limits.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> many college-going athletes from places like Pune dream of
+                    <b>corporate backing</b>; this scheme is a classic example of PSU support.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: national medalists in popular sports</span>
+                  <span class="sch-pill">Check: sportsscholarship.ongc.co.in</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "ONGC Sports Scholarship 2025-26 notification"</a>
+                </div>
+              </article>
+
+              <!-- INDIANOIL ACERS -->
+              <article class="sch-card p-4 mb-3" data-level="college" data-type="psu">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">IndianOil "Acers" Sports Scholarship</h5>
+                    <p class="small mb-2 text-muted-custom">IndianOil Corporation – IndianOil Sports Scholarship (Acers)</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: School / College</span>
+                      <span class="sch-tag type">Type: PSU / Corporate</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: fixed yearly scholarship amount plus support for training/competition as per official scheme.
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> promising young athletes in selected sports, usually with good national or state
+                    performance. Helps with kit, travel and training expenses.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> shows how <b>PSUs adopt players</b> and build long-term relationship,
+                    sometimes even leading to jobs later.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: consistent performers</span>
+                  <span class="sch-pill">Check: IndianOil official sports scholarship page</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "IndianOil sports scholarship Acers"</a>
+                </div>
+              </article>
+
+              <!-- BPCL SPORTS SCHOLARSHIP -->
+              <article class="sch-card p-4 mb-3" data-level="college" data-type="psu">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">BPCL Sports Scholarship</h5>
+                    <p class="small mb-2 text-muted-custom">Bharat Petroleum Corporation Limited (BPCL)</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: roughly 13–25 yrs</span>
+                      <span class="sch-tag type">Type: PSU / Corporate</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: monthly stipend (different for budding / junior / elite categories), plus kit and tournament expense support.
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> athletes placed into categories like Budding, Junior and Elite based on performance.
+                    Encourages them to keep training seriously without dropping out due to money issues.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> good example of how a company can <b>layer support</b> based on how
+                    far the athlete has already reached.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: rising national/probable players</span>
+                  <span class="sch-pill">Check: BPCL sports scholarship announcements</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "BPCL Sports Scholarship official notification"</a>
+                </div>
+              </article>
+
+              <!-- UNIVERSITY / PRIVATE SPORTS QUOTA -->
+              <article class="sch-card p-4 mb-3" data-level="college" data-type="private">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                  <div class="mb-2 mb-md-0">
+                    <h5 class="fw-bold mb-1">University & Private Sports Scholarships</h5>
+                    <p class="small mb-2 text-muted-custom">Universities / Colleges (examples: LPU and others)</p>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="sch-tag level">Level: College / UG / PG</span>
+                      <span class="sch-tag type">Type: Private / University</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="fw-medium mb-3 text-accent-2">
+                  Typical support: tuition fee concessions, hostel discounts, free access to gym/indoor facilities; exact money value depends on university rules and sports category.
+                </div>
+                
+                <div class="small mb-3 text-muted-custom">
+                  <p class="mb-2">
+                    <b>Who it's for:</b> students admitted under sports quota or with strong sports CV. Many universities fix
+                    limited seats and offer different levels of fee waiver based on the level of achievement.
+                  </p>
+                  <p class="mb-0">
+                    <b>Why it matters for our site:</b> students in cities like Pune often apply to multiple colleges. Knowing
+                    that <b>sports can reduce fees</b> makes continuing sport more realistic for families.
+                  </p>
+                </div>
+                
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top border-white border-opacity-25">
+                  <span class="sch-pill">Good for: balancing studies + sport</span>
+                  <span class="sch-pill">Check: each college's sports quota prospectus</span>
+                  <a href="#" class="text-accent small text-decoration-underline">Search "sports quota scholarship + college name"</a>
+                </div>
+              </article>
+
+              <!-- Add more scholarship cards here following same pattern -->
+              
+            </div>
+
+            <div id="emptyMsg" class="alert alert-warning text-center d-none mt-4">
+              No scholarships in our list match that filter. Try changing level/type or showing all.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER - USING BOOTSTRAP -->
+  <footer class="mt-auto">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="small text-muted-custom">
+            AthletesPulse – Scholarships & Funding · Quick overview for Indian student athletes, not an application portal.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-3 justify-content-md-end">
+            <a href="diet.html" class="text-accent small text-decoration-underline">See diet guide</a>
+            <a href="pune-map.html" class="text-accent small text-decoration-underline">See Pune sports map</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // ===== FILTER FUNCTIONALITY =====
+      const filterData = {
+        level: {
+          all: 'any level',
+          school: 'school level',
+          college: 'college / university level',
+          elite: 'elite / national level'
+        },
+        type: {
+          all: 'any type',
+          govt: 'Govt of India',
+          state: 'State Govt',
+          psu: 'PSU / corporate',
+          private: 'private / university'
+        }
+      };
+
+      function updateFilterDisplay() {
+        const level = $('#levelFilter').val();
+        const type = $('#typeFilter').val();
+        let visibleCount = 0;
+
+        $('.sch-card').each(function() {
+          const cardLevel = $(this).data('level');
+          const cardType = $(this).data('type');
+          const levelMatch = (level === 'all' || cardLevel === level);
+          const typeMatch = (type === 'all' || cardType === type);
+
+          if (levelMatch && typeMatch) {
+            $(this).fadeIn(300);
+            visibleCount++;
+          } else {
+            $(this).hide();
+          }
+        });
+
+        // Show/hide empty message
+        $('#emptyMsg').toggleClass('d-none', visibleCount !== 0);
+
+        // Update filter note
+        const levelText = filterData.level[level];
+        const typeText = filterData.type[type];
+        $('#filterNote').html(`Showing scholarships for <b>${levelText}</b> and <b>${typeText}</b>.`);
+      }
+
+      // Event handlers
+      $('#applyFilter').click(updateFilterDisplay);
+      
+      $('#resetFilter').click(function() {
+        $('#levelFilter, #typeFilter').val('all');
+        $('.sch-card').fadeIn(300);
+        $('#emptyMsg').addClass('d-none');
+        $('#filterNote').html('Currently showing <b>all levels & types</b>. Use filters to see only, for example, "School + State Govt".');
+      });
+
+      // Initialize
+      updateFilterDisplay();
+    });
+  </script>
+</body>
+</html>

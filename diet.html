@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AthletesPulse | Diet Suggestions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #050818;
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --accent: #5fffd3;
+      --accent-2: #ff9c73;
+      --accent-soft: rgba(95, 255, 211, 0.18);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #18253a 0, #050816 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(5, 8, 22, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(95, 255, 211, 0.8);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 50px;
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent);
+      color: #02010a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(95, 255, 211, 0.7);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 50px;
+    }
+
+    @media (max-width: 780px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050816;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      padding: 22px 0 18px;
+      background:
+        radial-gradient(circle at top left, rgba(95, 255, 211, 0.2), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(255, 156, 115, 0.2), transparent 60%),
+        linear-gradient(180deg, rgba(10, 16, 34, 0.96), rgba(5, 8, 22, 0.98));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 2.6fr 2.2fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(3, 6, 24, 0.9);
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(95, 255, 211, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 3.6vw, 38px);
+      font-weight: 700;
+      margin: 14px 0 8px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #5fffd3, #ff9c73);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 12px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--muted);
+    }
+
+    .hero-card {
+      border-radius: var(--radius);
+      background: rgba(3, 6, 24, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--shadow);
+      padding: 10px 12px 12px;
+      font-size: 12px;
+      display: grid;
+      grid-template-columns: 1.6fr 1.4fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      flex: 1;
+      padding: 18px 0 24px;
+      background: linear-gradient(180deg, rgba(8, 13, 33, 0.98), rgba(5, 8, 22, 0.98));
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2.1fr 2.3fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background: rgba(3, 6, 24, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      padding: 12px 12px 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 12px;
+    }
+
+    .field label {
+      display: block;
+    }
+
+    .info {
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    select, input[type="number"] {
+      background: rgba(1, 4, 20, 0.98);
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 7px 11px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+    }
+
+    select:focus, input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    /* BUTTONS */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .btn {
+      border-radius: 50px;
+      padding: 7px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-size: 11px;
+      transition: 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #5fffd3, #ff9c73);
+      color: #02010a;
+      border-color: transparent;
+      box-shadow: 0 16px 35px rgba(95, 255, 211, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 45px rgba(95, 255, 211, 0.6);
+    }
+
+    .btn-outline {
+      color: var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: rgba(95, 255, 211, 0.08);
+    }
+
+    /* PLAN CARD */
+    .plan-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(95, 255, 211, 0.12), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(255, 156, 115, 0.16), transparent 60%),
+                  linear-gradient(180deg, rgba(5, 8, 22, 0.95), rgba(3, 5, 18, 0.98));
+      pointer-events: none;
+    }
+
+    .plan-content {
+      position: relative;
+    }
+
+    .plan-summary {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 780px) {
+      .plan-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .plan-block {
+      border-radius: 13px;
+      padding: 7px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(5, 8, 30, 0.96);
+      font-size: 12px;
+    }
+
+    .plan-block-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 3px;
+      color: var(--accent);
+    }
+
+    .plan-block ul {
+      padding-left: 17px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .plan-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .plan-tag {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 12px 0 14px;
+      background: #02010a;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* UTILITIES */
+    .alert {
+      font-size: 11px;
+      color: #ff9b9b;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <img src="logo.jpg" alt="AthletesPulse" class="logo-img">
+        <div>
+          <div class="logo-text-main">AthletesPulse</div>
+          <div class="logo-text-sub">Diet & Fuel Guide</div>
+        </div>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html">Fitness Tests</a>
+        <a href="health.html">Health Hub</a>
+        <a href="diet.html" class="active">Diet</a>
+        <a href="scholarships.html">Scholarships</a>
+        <a href="pune-map.html">India Sports</a>
+      </nav>
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <div style="width:100%;height:200px;border-radius:18px;overflow:hidden;margin:20px auto;background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.85)),url('food.jpeg') center/cover no-repeat;box-shadow:0 12px 30px rgba(0,0,0,.6);max-width:min(1120px,100% - 32px)"></div>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-dot"></span>
+          Fuel for the way you play
+        </div>
+        <h1 class="hero-title">
+          Simple, sport-wise <span>diet ideas</span> for student athletes.
+        </h1>
+        <p class="hero-subtitle">
+          Instead of confusing macros and numbers, this page converts your age group, sport and training days into plain-language suggestions using familiar Indian foods.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">U14 · U17 · 17+ friendly</div>
+          <div class="pill">Badminton · TT · 100m · Football · Cricket · Tennis</div>
+          <div class="pill">Focus on habits, not strict diets</div>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div>
+          <h3>What "balanced" roughly means here</h3>
+          <p>Each plan quietly balances three things:</p>
+          <ul>
+            <li><b>Carbs</b> – energy (rice, roti, poha, fruits)</li>
+            <li><b>Protein</b> – repair (dal, beans, paneer, curd, milk, eggs if used)</li>
+            <li><b>Good fats</b> – long energy (nuts, seeds, ghee in small amounts)</li>
+          </ul>
+        </div>
+        <div>
+          <img src="macro.png" alt="Macro breakdown" style="width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.16);max-height:140px;object-fit:cover;opacity:.9">
+          <div style="font-size:10px;padding:3px 7px;border-radius:50px;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.3);display:inline-block;margin-top:4px">Macro picture · Just for intuition</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <div class="container layout">
+      <section class="card">
+        <h2 class="card-title">Tell us how you train</h2>
+        <p class="card-sub">Based on this, we'll suggest a sample day with pre/post training snacks.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="ageGroup">Age group <span class="info">(for portion guidelines)</span></label>
+            <select id="ageGroup">
+              <option value="">Select age group</option>
+              <option value="u14">U14 (up to 13 years)</option>
+              <option value="u17">U17 (14–16 years)</option>
+              <option value="17plus">17+ (college level)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sport">Main sport <span class="info">(the one you train most for now)</span></label>
+            <select id="sport">
+              <option value="">Select sport</option>
+              <option value="badminton">Badminton</option>
+              <option value="tt">Table Tennis</option>
+              <option value="sprint">100m Sprint</option>
+              <option value="football">Football</option>
+              <option value="cricket">Cricket</option>
+              <option value="tennis">Lawn Tennis</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="days">Training days per week <span class="info">(sessions that make you sweat)</span></label>
+            <input type="number" id="days" min="0" max="7" step="1" placeholder="e.g. 4">
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">0–2 = light · 3–5 = moderate · 6–7 = high load</div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="generateBtn">Generate plan</button>
+          <button class="btn btn-outline" id="resetBtn">Clear</button>
+        </div>
+
+        <div id="dietAlert" class="alert"></div>
+      </section>
+
+      <section class="card plan-card">
+        <div class="plan-overlay"></div>
+        <div class="plan-content">
+          <h2 class="card-title">Sample day – fuel timeline</h2>
+          <p class="card-sub">Think of this as a structure, not a strict menu.</p>
+
+          <div class="plan-summary" id="planSummary">
+            Choose your age, sport and training days on the left.
+          </div>
+
+          <div class="plan-grid">
+            <div class="plan-block" id="blockHydration">
+              <div class="plan-block-title">All day · Hydration</div>
+              <ul id="hydrationList">
+                <li>Start your day with a glass of water as soon as you wake up.</li>
+                <li>Through the day, keep sipping.</li>
+                <li>During training: small sips every 10–15 min.</li>
+              </ul>
+            </div>
+
+            <div class="plan-block" id="blockPre">
+              <div class="plan-block-title">Before training</div>
+              <ul id="preList">
+                <li>1–2 hours before: light meal with carbs + protein.</li>
+                <li>30–45 min before: small snack if needed.</li>
+              </ul>
+            </div>
+
+            <div class="plan-block" id="blockPost">
+              <div class="plan-block-title">After training</div>
+              <ul id="postList">
+                <li>Within 30–45 min: water + protein + carb.</li>
+                <li>Avoid only junk right after.</li>
+              </ul>
+            </div>
+
+            <div class="plan-block" id="blockMeals">
+              <div class="plan-block-title">Main meals focus</div>
+              <ul id="mealsList">
+                <li>Each main meal: 1 carb + 1 protein + veggies.</li>
+                <li>If you eat eggs: include 1–2 on training days.</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="plan-tip" id="extraTip">On rest days, keep meals similar but slightly smaller portions.</p>
+
+          <div class="plan-tag-row" id="planTags">
+            <span class="plan-tag">Veg-friendly examples</span>
+            <span class="plan-tag">Eggs optional</span>
+            <span class="plan-tag">Street/junk = sometimes, not always</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>AthletesPulse – Diet Guide · Built for student athletes who train, study and still want to enjoy food.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="health.html">See injury tips</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Mobile nav toggle
+      $('#navToggle').click(() => $('#navLinks').toggleClass('open'));
+
+      // Sport profile data
+      const sportProfiles = {
+        badminton: { label: "Badminton", snack: "banana + handful of chana, or small jam sandwich + water." },
+        tt: { label: "Table Tennis", snack: "fruit + few nuts, or poha/upma small portion." },
+        sprint: { label: "100m Sprint", snack: "banana or dates + water; main carb meal 1–2 hours before track." },
+        football: { label: "Football", snack: "banana + ORS-style drink or lemon water with salt + roasted chana." },
+        cricket: { label: "Cricket", snack: "paratha/roti roll with paneer or bhaji, plus fruit." },
+        tennis: { label: "Lawn Tennis", snack: "banana + small curd/yogurt, or sandwich with paneer/cheese and veggies." }
+      };
+
+      const getLoadLabel = d => d <= 2 ? "light" : d <= 5 ? "moderate" : "high";
+      const getAgeLabel = a => ({
+        u14: "U14 – growing body, smaller portions more often",
+        u17: "U17 – teenage training phase",
+        "17plus": "17+ – college level, closer to adult portions"
+      }[a] || "");
+
+      // Build diet plan
+      function buildPlan(age, sportKey, days) {
+        const load = getLoadLabel(days);
+        const sport = sportProfiles[sportKey];
+        
+        // Update summary
+        $('#planSummary').html(
+          `You selected <b>${sport ? sport.label : 'your sport'}</b>, training <b>${days} day(s)/week</b> (${load} load)` +
+          (age ? ` – age group: <b>${getAgeLabel(age)}</b>.` : '')
+        );
+
+        // Hydration
+        let hydHtml = '<li>Target pale-yellow urine color; very dark = not enough water.</li>';
+        hydHtml += load === "high" 
+          ? '<li>On high-load weeks, add extra glass with salt + lemon in hot weather.</li>'
+          : '<li>Keep 1 bottle during class and finish by lunch, another by evening.</li>';
+        hydHtml += '<li>During training: small sips every 10–15 minutes.</li>';
+        $('#hydrationList').html(hydHtml);
+
+        // Pre-training
+        let preHtml = '';
+        preHtml += load === "light" 
+          ? '<li>On training days, 1–2 hours before: simple meal with carbs + protein.</li>'
+          : load === "moderate" 
+          ? '<li>1–2 hours before: balanced plate – roti/rice + dal + sabzi.</li>'
+          : '<li>On hard days: make sure pre-session meal has decent carb base and protein.</li>';
+        preHtml += `<li>30–45 minutes before: ${sport ? sport.snack : 'banana, dates or small snack'}.</li>`;
+        $('#preList').html(preHtml);
+
+        // Post-training
+        let postHtml = '<li>Within 30–45 minutes: water + protein + carb – e.g. milk/curd + banana.</li>';
+        postHtml += load === "high" 
+          ? '<li>If training twice a day, keep an extra recovery snack ready.</li>'
+          : '<li>Avoid only biscuits/chips as full recovery.</li>';
+        $('#postList').html(postHtml);
+
+        // Main meals
+        let mealsHtml = age 
+          ? {
+              u14: '<li>3 smaller main meals + 1–2 snacks often works better.</li>',
+              u17: '<li>Keep 3 main meals solid + 1–2 quality snacks around training.</li>',
+              "17plus": '<li>For 17+, aim for 3 solid meals with enough protein.</li>'
+            }[age]
+          : '<li>Base meals: 1 carb + 1 protein + veggies.</li>';
+
+        if (["sprint", "football"].includes(sportKey)) {
+          mealsHtml += '<li>For heavy leg sports, include extra carbs at lunch or pre-training.</li>';
+        } else if (["badminton", "tennis"].includes(sportKey)) {
+          mealsHtml += '<li>For racket sports, don\'t go to court on empty stomach.</li>';
+        } else if (["tt", "cricket"].includes(sportKey)) {
+          mealsHtml += '<li>Avoid very heavy meals right before play.</li>';
+        }
+        mealsHtml += '<li>If you eat eggs, 1–2 with breakfast or lunch on training days.</li>';
+        $('#mealsList').html(mealsHtml);
+
+        // Extra tip
+        $('#extraTip').text(
+          load === "high" 
+            ? "High-load weeks: eat till comfortably full, not stuffed. Rest days are for recovery."
+            : load === "moderate"
+            ? "Moderate load: keep meal pattern steady. Rest days can have smaller portions."
+            : "Light load: good time to tidy up habits – more fruits and veggies."
+        );
+
+        // Tags
+        const tags = ["Carbs around training, protein spread through day"];
+        if (["sprint", "football"].includes(sportKey)) tags.push("Leg-heavy sport · extra carb support");
+        else if (["badminton", "tennis"].includes(sportKey)) tags.push("Court sport · avoid heavy stomach");
+        else if (sportKey === "tt") tags.push("High focus · avoid sugar crashes");
+        else if (sportKey === "cricket") tags.push("Long duration · steady snacks");
+        tags.push("Veg-friendly examples · eggs optional");
+
+        $('#planTags').html(tags.map(t => `<span class="plan-tag">${t}</span>`).join(''));
+      }
+
+      // Generate button
+      $('#generateBtn').click(function() {
+        const age = $('#ageGroup').val();
+        const sport = $('#sport').val();
+        const days = parseInt($('#days').val());
+        const $alert = $('#dietAlert');
+
+        $alert.hide();
+
+        if (!age || !sport || isNaN(days)) {
+          $alert.text("Please select age group, sport and enter training days per week.").show();
+          return;
+        }
+
+        if (days < 0 || days > 7) {
+          $alert.text("Training days per week should be between 0 and 7.").show();
+          return;
+        }
+
+        buildPlan(age, sport, days);
+      });
+
+      // Reset button
+      $('#resetBtn').click(function() {
+        $('#ageGroup, #sport').val('');
+        $('#days').val('');
+        $('#dietAlert').hide();
+
+        // Reset to default text
+        $('#planSummary').html('Choose your age, sport and training days on the left.');
+        $('#hydrationList').html(`
+          <li>Start your day with a glass of water as soon as you wake up.</li>
+          <li>Through the day, keep sipping.</li>
+          <li>During training: small sips every 10–15 min.</li>
+        `);
+        $('#preList').html(`
+          <li>1–2 hours before: light meal with carbs + protein.</li>
+          <li>30–45 min before: small snack if needed.</li>
+        `);
+        $('#postList').html(`
+          <li>Within 30–45 min: water + protein + carb.</li>
+          <li>Avoid only junk right after.</li>
+        `);
+        $('#mealsList').html(`
+          <li>Each main meal: 1 carb + 1 protein + veggies.</li>
+          <li>If you eat eggs: include 1–2 on training days.</li>
+        `);
+        $('#extraTip').text('On rest days, keep meals similar but slightly smaller portions.');
+        $('#planTags').html(`
+          <span class="plan-tag">Veg-friendly examples</span>
+          <span class="plan-tag">Eggs optional</span>
+          <span class="plan-tag">Street/junk = sometimes, not always</span>
+        `);
+      });
+
+      // Add keyboard shortcuts
+      $(document).keydown(function(e) {
+        if (e.ctrlKey && e.key === 'Enter') $('#generateBtn').click();
+        if (e.key === 'Escape') $('#resetBtn').click();
+      });
+
+      // Save form state to localStorage
+      $('select, input').on('change input', function() {
+        const formData = {
+          age: $('#ageGroup').val(),
+          sport: $('#sport').val(),
+          days: $('#days').val()
+        };
+        localStorage.setItem('dietForm', JSON.stringify(formData));
+      });
+
+      // Load saved form state
+      const saved = localStorage.getItem('dietForm');
+      if (saved) {
+        const formData = JSON.parse(saved);
+        $('#ageGroup').val(formData.age || '');
+        $('#sport').val(formData.sport || '');
+        $('#days').val(formData.days || '');
+        if (formData.age && formData.sport && formData.days) {
+          buildPlan(formData.age, formData.sport, formData.days);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

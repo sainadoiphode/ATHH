@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AthletesPulse | Health & Injury Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050816;
+      --bg-alt: #080d1f;
+      --card-bg: #050818;
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --accent: #ffb74d;          /* warm amber */
+      --accent-soft: rgba(255, 183, 77, 0.18);
+      --danger: #ff7aa2;
+      --safe: #4dff6f;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius-xl: 18px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #201628 0, #050816 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(5, 8, 22, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(255, 183, 77, 0.8);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent);
+      color: #02010a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(255, 183, 77, 0.7);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 780px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050816;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      padding: 22px 0 18px;
+      background:
+        radial-gradient(circle at top left, rgba(255, 183, 77, 0.2), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(255, 122, 162, 0.16), transparent 60%),
+        linear-gradient(180deg, rgba(10, 7, 18, 0.96), rgba(5, 8, 22, 0.98));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 2.7fr) minmax(0, 2.1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(3, 6, 24, 0.9);
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(255, 183, 77, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 3.6vw, 38px);
+      font-weight: 700;
+      margin: 14px 0 8px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #ffb74d, #ff7aa2);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 12px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--muted);
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-note b {
+      color: var(--text);
+    }
+
+    .hero-right {
+      border-radius: 18px;
+      background: rgba(3, 6, 24, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px 12px;
+      font-size: 12px;
+    }
+
+    .mode-label {
+      font-size: 11px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .mode-toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .mode-btn {
+      border-radius: 999px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s ease;
+    }
+
+    .mode-btn span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .mode-btn.active[data-mode="care"] {
+      color: var(--danger);
+      border-color: var(--danger);
+      box-shadow: 0 0 16px rgba(255, 122, 162, 0.7);
+    }
+
+    .mode-btn.active[data-mode="prevention"] {
+      color: var(--safe);
+      border-color: var(--safe);
+      box-shadow: 0 0 16px rgba(77, 255, 111, 0.7);
+    }
+
+    .mode-text {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* FILTERS */
+    .filters-bar {
+      padding: 12px 0 8px;
+      background: #050816;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .filters-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filters-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .sport-filter-btn {
+      border-radius: 999px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(3, 6, 24, 0.96);
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s ease;
+    }
+
+    .sport-filter-btn span.col {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .sport-filter-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 12px rgba(255, 183, 77, 0.7);
+    }
+
+    .filters-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      padding: 16px 0 24px;
+      background: linear-gradient(180deg, rgba(8, 13, 33, 0.98), rgba(5, 8, 22, 0.98));
+    }
+
+    .sport-block {
+      border-radius: var(--radius-xl);
+      background: rgba(3, 6, 24, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px 12px;
+      margin-bottom: 14px;
+    }
+
+    .sport-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .sport-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .sport-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .sport-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .sport-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+    }
+
+    .injuries-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 780px) {
+      .injuries-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .injury-card {
+      border-radius: 14px;
+      background: rgba(5, 8, 30, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 7px 9px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: 0.16s ease;
+    }
+
+    .injury-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.9);
+      border-color: var(--accent);
+    }
+
+    .injury-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .injury-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .injury-type-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .pill-impact {
+      color: #ffe45e;
+      border-color: rgba(255, 228, 94, 0.85);
+    }
+
+    .pill-overuse {
+      color: #8bff6b;
+      border-color: rgba(139, 255, 107, 0.85);
+    }
+
+    .pill-acute {
+      color: #ff7aa2;
+      border-color: rgba(255, 122, 162, 0.85);
+    }
+
+    .injury-summary {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .injury-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .badge-safe {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(77, 255, 111, 0.7);
+      color: var(--safe);
+    }
+
+    .badge-danger {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 122, 162, 0.8);
+      color: var(--danger);
+    }
+
+    .injury-toggle {
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent);
+    }
+
+    .injury-toggle span.arrow {
+      display: inline-block;
+      transition: 0.15s ease;
+    }
+
+    .injury-details {
+      display: none;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.16);
+      padding-top: 4px;
+    }
+
+    .injury-details b {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .injury-details p {
+      margin-bottom: 3px;
+    }
+
+    .injury-card.open .injury-details {
+      display: block;
+    }
+
+    .injury-card.open .injury-toggle span.arrow {
+      transform: rotate(180deg);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 12px 0 14px;
+      background: #02010a;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <img src="logo.jpg" alt="AthletesPulse logo" class="logo-img" />
+        <div>
+          <div class="logo-text-main">AthletesPulse</div>
+          <div class="logo-text-sub">Health & Injury Hub</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html">Fitness Tests</a>
+        <a href="health.html" class="active">Health Hub</a>
+        <a href="diet.html">Diet</a>
+        <a href="scholarships.html">Scholarships</a>
+        <a href="pune-map.html">India Sports</a>
+      </nav>
+
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-dot"></span>
+          Train smart · Not scared
+        </div>
+        <h1 class="hero-title">
+          One place to read your <span>injury red flags & prevention</span>.
+        </h1>
+        <p class="hero-subtitle">
+          Every sport on AthletesPulse has its own injury vibe: jumps and cuts, racket swings, sprints, long matches.
+          This hub connects your <b>sport</b>, <b>pain pattern</b> and <b>warm-up habits</b> into clear,
+          readable cards – so you know when to chill and when to get help.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">Filter by sport</div>
+          <div class="pill">Click cards to expand details</div>
+          <div class="pill">Green = normal soreness · Pink = red flag</div>
+        </div>
+        <div class="hero-note">
+          This page is meant for <b>awareness</b>, not diagnosis. If pain is sharp, unusual or not settling,
+          <b>show a doctor / physio</b> – don’t self-treat forever.
+        </div>
+      </div>
+
+      <aside class="hero-right">
+        <div class="mode-label">What do you want right now?</div>
+        <div class="mode-toggle-row">
+          <button class="mode-btn active" data-mode="care" id="modeCare">
+            <span class="dot"></span> I already have some pain
+          </button>
+          <button class="mode-btn" data-mode="prevention" id="modePrev">
+            <span class="dot"></span> I want to prevent injuries
+          </button>
+        </div>
+        <div class="mode-text" id="modeText">
+          In this mode, focus more on the <b>“Warning signs”</b> and <b>“Immediate care”</b> rows inside each card.
+          If you see multiple red flag signs, do not continue hard training.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <section class="filters-bar">
+    <div class="container">
+      <div class="filters-inner">
+        <div class="filters-left">
+          <span class="filter-label">Filter by sport:</span>
+          <button class="sport-filter-btn active" data-sport="all">
+            <span class="col"></span> All
+          </button>
+          <button class="sport-filter-btn" data-sport="badminton">
+            <span class="col"></span> Badminton
+          </button>
+          <button class="sport-filter-btn" data-sport="tt">
+            <span class="col"></span> Table Tennis
+          </button>
+          <button class="sport-filter-btn" data-sport="sprint">
+            <span class="col"></span> 100m Sprint
+          </button>
+          <button class="sport-filter-btn" data-sport="football">
+            <span class="col"></span> Football
+          </button>
+          <button class="sport-filter-btn" data-sport="cricket">
+            <span class="col"></span> Cricket
+          </button>
+          <button class="sport-filter-btn" data-sport="tennis">
+            <span class="col"></span> Lawn Tennis
+          </button>
+        </div>
+      </div>
+      <div class="filters-note" id="filterNote">
+        Showing injuries for <b>all sports</b>. Pick one sport to see only that block.
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="container">
+
+      <!-- BADMINTON -->
+      <section class="sport-block" data-sport="badminton">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">Badminton</div>
+            <div class="sport-meta">Quick direction changes · Overhead swings · Jumps</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Shoulder & elbow load</span>
+              <span class="sport-tag">Knee & ankle joints</span>
+              <span class="sport-tag">Single-leg landings</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Shoulder strain -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Shoulder overload (smash / clears)</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Dull ache or pinch at the front or top of shoulder, especially after many smashes and clears.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: mild post-session soreness</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Technique uses only arm instead of full body; no warm-up; sudden jump in volume.</p>
+              <p><b>Warning signs (red-flag side):</b> Pain while simply lifting the arm overhead, pain at night, weakness
+                when holding the racket, sharp pinch on every smash.</p>
+              <p><b>Immediate care:</b> Cut down heavy smashes for a few days, apply ice 10–15 min after play, gentle
+                pain-free range of motion. If pain > 1 week or getting worse, see a physio or sports doctor.</p>
+              <p><b>Prevention / future:</b> Add basic band/weight work for rotator cuff and upper back, always warm-up
+                with shadow swings first, progress jump-smash volume slowly instead of suddenly.</p>
+            </div>
+          </article>
+
+          <!-- Tennis elbow -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Tennis elbow (backhand grip stress)</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Pain at outer elbow when gripping, lifting the racket or hitting backhands.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: only mild after heavy session</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Very tight grip, wrong backhand technique, suddenly long sessions after a break.</p>
+              <p><b>Warning signs:</b> Pain even when lifting light objects, gripping a bottle, or twisting a door handle;
+                tenderness if you press on the outer elbow bone.</p>
+              <p><b>Immediate care:</b> Reduce racket load for some time, use ice massage around the sore area, avoid
+                playing through sharp pain. Consider an elbow strap only after consulting a professional.</p>
+              <p><b>Prevention / future:</b> Relax your grip, improve technique, add simple forearm strengthening (wrist
+                curls, extensions) with light weights or bands.</p>
+            </div>
+          </article>
+
+          <!-- Ankle sprain -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Ankle sprain (sideways lunge)</div>
+              <span class="injury-type-pill pill-acute">Acute</span>
+            </div>
+            <p class="injury-summary">
+              Sudden twist with immediate pain and swelling around ankle after landing or cutting sideways.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-danger">Pink: cannot put weight = stop play</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Court is slippery, shoes have poor grip, land awkwardly from a jump or rush to net.</p>
+              <p><b>Warning signs:</b> Big swelling, bruising, pain on every step, ankle feels unstable or “giving way”.</p>
+              <p><b>Immediate care:</b> RICE – Rest, Ice, Compression bandage, Elevation. Do not forcefully stretch it on day one.
+                If you cannot take 4–5 steps without heavy pain, get an X-ray check.</p>
+              <p><b>Prevention / future:</b> Strengthen calf and ankle muscles, do single-leg balance drills, replace worn-out
+                shoes and avoid dusty/slippery courts.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- TABLE TENNIS -->
+      <section class="sport-block" data-sport="tt">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">Table Tennis</div>
+            <div class="sport-meta">High repetition · Fast reactions · Small joint stress</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Wrist & elbow</span>
+              <span class="sport-tag">Neck & upper back</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Wrist strain -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Wrist strain (spin-heavy play)</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Aching wrist, especially during heavy spin serves or flicks, or after long multi-ball sessions.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: settles within a day</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Very wristy strokes, sudden increase in spin practice, gripping racket too tight.</p>
+              <p><b>Warning signs:</b> Pain with simple daily tasks (typing, writing, holding a glass), swelling around wrist.</p>
+              <p><b>Immediate care:</b> Reduce volume of extreme spin serves and flicks, use ice for 10–15 mins after play,
+                rest 1–2 days if pain is sharp.</p>
+              <p><b>Prevention / future:</b> Use more forearm & body rotation in strokes, do light wrist strengthening and
+                mobility, avoid very stiff racket setups if you’re still building strength.</p>
+            </div>
+          </article>
+
+          <!-- Neck / upper back -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Neck & upper back tightness</div>
+              <span class="injury-type-pill pill-overuse">Posture</span>
+            </div>
+            <p class="injury-summary">
+              Stiffness around neck, shoulders and between shoulder blades after leaning forward for long sessions.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: stiffness, not sharp pain</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> No breaks during practice, head poked forward, always in one stance.</p>
+              <p><b>Warning signs:</b> Headaches, tingling into arms, pain that wakes you at night – see a professional.</p>
+              <p><b>Immediate care:</b> Gentle stretches, heat pack after training, easy mobility moves for neck and upper back.</p>
+              <p><b>Prevention / future:</b> Add basic posture exercises (rows, band pull-aparts), take micro-breaks to stand tall
+                and reset between sets.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 100m SPRINT -->
+      <section class="sport-block" data-sport="sprint">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">100m Sprint</div>
+            <div class="sport-meta">High speed · Explosive load on legs</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Hamstrings & calves</span>
+              <span class="sport-tag">Shin & Achilles</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Hamstring strain -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Hamstring pull</div>
+              <span class="injury-type-pill pill-acute">Acute</span>
+            </div>
+            <p class="injury-summary">
+              Sudden pulling pain at the back of the thigh during a sprint, sometimes with a “pop” feeling.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-danger">Pink: stop sprinting immediately</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> No warm-up, sudden max sprint after being still, fatigue at end of session.</p>
+              <p><b>Warning signs:</b> Pain when walking fast, running or bending forward, visible bruising after 1–2 days.</p>
+              <p><b>Immediate care:</b> Stop sprinting. Use ice in the first 24–48 hours, walk only as comfortable, avoid
+                aggressive stretching early. Serious tears need medical check and rehab plan.</p>
+              <p><b>Prevention / future:</b> Always warm up with dynamic drills (A-skips, high knees, leg swings), add hamstring
+                strengthening (bridges, Nordic curls if guided), increase sprint load gradually.</p>
+            </div>
+          </article>
+
+          <!-- Shin splints -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Shin splints (front of leg pain)</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Aching along the front/inside of the shin bone, especially when you start running or after sessions.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: settles with rest days</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Big jump in running volume, hard surfaces, worn-out shoes.</p>
+              <p><b>Warning signs:</b> Pain in one small spot on shin bone, pain even at rest – might need imaging to rule out
+                stress fracture.</p>
+              <p><b>Immediate care:</b> Reduce running volume, switch some sessions to cycling/swimming, ice after sessions,
+                avoid continuing high-impact if pain is increasing.</p>
+              <p><b>Prevention / future:</b> Build mileage slowly, use proper running shoes, add calf and shin strengthening,
+                avoid only concrete surfaces.</p>
+            </div>
+          </article>
+
+          <!-- Achilles -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Achilles tendon irritation</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Stiffness and pain at the back of the heel, especially first thing in the morning or start of runs.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: eases after warm-up</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Sudden increase in sprint volume or hill sprints, tight calves, poor recovery.</p>
+              <p><b>Warning signs:</b> Pain that gets worse with more running, visible swelling or thickening of the tendon,
+                pain with simple walking.</p>
+              <p><b>Immediate care:</b> Reduce high-speed work, avoid uphill sprints, use ice after training, elevate legs.</p>
+              <p><b>Prevention / future:</b> Add calf raises (straight and bent knee), regular calf stretching, progress sprint
+                intensity step by step instead of huge jumps.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- FOOTBALL -->
+      <section class="sport-block" data-sport="football">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">Football</div>
+            <div class="sport-meta">Change of direction · Contact · Long matches</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Knees & ankles</span>
+              <span class="sport-tag">Hamstrings & groin</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Ankle sprain -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Ankle sprain (tackle / uneven ground)</div>
+              <span class="injury-type-pill pill-acute">Acute</span>
+            </div>
+            <p class="injury-summary">
+              Twist or roll of the ankle during tackle, landing or sudden direction change, followed by swelling.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-danger">Pink: limp = no more game</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Poor studs on grass, uneven ground, late contact or uncontrolled tackle.</p>
+              <p><b>Warning signs:</b> Big swelling, ankle feels wobbly, cannot jog without pain – need a proper check.</p>
+              <p><b>Immediate care:</b> RICE protocol, no “running it off”. Use crutches if advised; heavy injuries may need
+                immobilisation initially.</p>
+              <p><b>Prevention / future:</b> Strengthen around ankle, work on balance, choose correct footwear for surface,
+                warm-up properly before intense play.</p>
+            </div>
+          </article>
+
+          <!-- Knee overload -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Knee strain (overload / jump landings)</div>
+              <span class="injury-type-pill pill-impact">Impact / load</span>
+            </div>
+            <p class="injury-summary">
+              Deep ache around knee after lots of running, jumps or playing multiple matches close together.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: better after 1–2 easy days</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Very high load, weak glutes/thighs, stiff hips/ankles, hard grounds.</p>
+              <p><b>Warning signs:</b> Locking, catching, knee giving way, or swelling inside the joint – get a medical check.</p>
+              <p><b>Immediate care:</b> Cut down match minutes for a while, use ice after play, simple pain-free range exercises.</p>
+              <p><b>Prevention / future:</b> Strengthen quads and glutes (squats, lunges, bridges), practice soft landings with
+                bent knees, vary surfaces if possible.</p>
+            </div>
+          </article>
+
+          <!-- Hamstring/groin tightness -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Hamstring / groin tightness</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Tight or crampy feeling at the back of thigh or inner thigh during repeated sprints or long halves.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: mild, improves with warm-up</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Poor warm-up, dehydration, weak posterior chain or adductors.</p>
+              <p><b>Warning signs:</b> Sudden sharp pull, cannot continue sprinting, visible bruise later – treat as a strain.</p>
+              <p><b>Immediate care:</b> If it shifts from “tight” to “pulled”, stop playing. Use gentle stretching only if it’s
+                mild tightness, not sharp pain.</p>
+              <p><b>Prevention / future:</b> Hamstring and groin strengthening (bridges, Nordic variations, adductor side plank),
+                proper hydration and warm-up before matches.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CRICKET -->
+      <section class="sport-block" data-sport="cricket">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">Cricket</div>
+            <div class="sport-meta">Repetitive bowling · Batting twists · Fielding dives</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Shoulder & back (bowlers)</span>
+              <span class="sport-tag">Elbow & fingers (batting / catching)</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Fast bowler back -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Lower back pain (fast bowlers)</div>
+              <span class="injury-type-pill pill-overuse">Load</span>
+            </div>
+            <p class="injury-summary">
+              Aching or sharp pain in lower back after spells, especially with mixed or twisted bowling action.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-danger">Pink: sharp pain = reduce spells</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> High bowling volume, poor core/glute strength, technique issues, rapid growth phase in teens.</p>
+              <p><b>Warning signs:</b> Pain with simple bending, pain that doesn’t ease with rest, night pain – needs medical review
+                to rule out stress fractures.</p>
+              <p><b>Immediate care:</b> Reduce number of overs, avoid intense back-bending drills, use ice/heat as guided, gentle
+                pain-free mobility.</p>
+              <p><b>Prevention / future:</b> Work with coach on action, add core and hip strength work, avoid back-to-back overload
+                days without recovery.</p>
+            </div>
+          </article>
+
+          <!-- Shoulder bowling/batting -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Throwing / bowling shoulder pain</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Pain around shoulder after repeated throws or long bowling sessions, especially for fielders and fast bowlers.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: mild and post-session only</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Lots of high-effort throws from boundary, long spells with poor warm-up.</p>
+              <p><b>Warning signs:</b> Clicking, feeling of slipping, weakness or loss of speed – see a sports physio.</p>
+              <p><b>Immediate care:</b> Reduce throwing distance/speed for some time, ice after sessions, avoid repeated
+                “maximum effort” throws.</p>
+              <p><b>Prevention / future:</b> Build shoulder endurance (band work, Y-T-W exercises), limit throwing load sensibly,
+                never skip warm-up throws.</p>
+            </div>
+          </article>
+
+          <!-- Finger injuries -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Finger jams (catching / wicketkeeping)</div>
+              <span class="injury-type-pill pill-acute">Impact</span>
+            </div>
+            <p class="injury-summary">
+              Sudden pain, swelling or deformity in fingers after misjudged catches or wicketkeeping takes.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-danger">Pink: crooked finger = urgent check</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Ball hits unsupported fingers, poor catching technique away from body.</p>
+              <p><b>Warning signs:</b> Visible deformity, finger stuck in bent position, severe swelling – may be fracture or
+                dislocation.</p>
+              <p><b>Immediate care:</b> Do not pull aggressively. Ice, splint gently in comfortable position, and get medical
+                imaging.</p>
+              <p><b>Prevention / future:</b> Drill catching technique regularly, strengthen grip and finger muscles, use
+                proper wicketkeeping gloves for keepers.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- LAWN TENNIS -->
+      <section class="sport-block" data-sport="tennis">
+        <div class="sport-header">
+          <div>
+            <div class="sport-name">Lawn Tennis</div>
+            <div class="sport-meta">Rackets · Repeated serves · Lateral movement</div>
+            <div class="sport-tags">
+              <span class="sport-tag">Elbow & shoulder</span>
+              <span class="sport-tag">Knees (court load)</span>
+            </div>
+          </div>
+        </div>
+        <div class="injuries-grid">
+
+          <!-- Tennis elbow -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Tennis elbow (backhand & grip)</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Pain on outer elbow with backhands, gripping racquet or lifting things with palm down.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: mild, recent increase in play</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Stiff arm backhand, wrong grip size, sudden return after a long break.</p>
+              <p><b>Warning signs:</b> Pain even at rest, drop in grip strength, pain lasting many weeks – get professional input.</p>
+              <p><b>Immediate care:</b> Reduce play volume temporarily, ice massage, avoid pain-heavy strokes for some time.</p>
+              <p><b>Prevention / future:</b> Correct grip size, improve technique, include wrist/forearm strengthening to
+                tolerate load better.</p>
+            </div>
+          </article>
+
+          <!-- Shoulder serve -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Serve-related shoulder pain</div>
+              <span class="injury-type-pill pill-overuse">Overuse</span>
+            </div>
+            <p class="injury-summary">
+              Pain during or after serves, especially at the top of motion or during follow-through.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: only after long session</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Many serves in one go, poor scapular/rotator cuff strength, rushed warm-up.</p>
+              <p><b>Warning signs:</b> Pain with daily overhead tasks, repeated clicking, feeling of instability or weakness.</p>
+              <p><b>Immediate care:</b> Cut serve volume temporarily, keep general movement pain-free, use ice/heat as guided.</p>
+              <p><b>Prevention / future:</b> Add shoulder stability and rotator cuff exercises, progress serve count gradually,
+                balance forehand/backhand/serve loads.</p>
+            </div>
+          </article>
+
+          <!-- Knee load -->
+          <article class="injury-card">
+            <div class="injury-header">
+              <div class="injury-name">Knee load on hard courts</div>
+              <span class="injury-type-pill pill-impact">Impact</span>
+            </div>
+            <p class="injury-summary">
+              Aching knees after sessions on hard courts, especially around front of knee or just below kneecap.
+            </p>
+            <div class="injury-meta-row">
+              <span class="badge-safe">Green: settles with 1–2 days rest</span>
+              <span class="injury-toggle">Details <span class="arrow">▼</span></span>
+            </div>
+            <div class="injury-details">
+              <p><b>Common when:</b> Lots of start-stop movement, weak quads/glutes, very stiff ankles/hips.</p>
+              <p><b>Warning signs:</b> Swelling, locking, giving way or pain climbing stairs – check with a professional.</p>
+              <p><b>Immediate care:</b> Reduce back-to-back hard-court days, ice after play, low-impact cross-training on
+                non-court days.</p>
+              <p><b>Prevention / future:</b> Strength train legs and hips, use good quality shoes, mix softer surfaces if available.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        AthletesPulse – Health & Injury Hub · Awareness for badminton, TT, sprint, football, cricket & tennis players.
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="diet.html">See diet suggestions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    navToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    // Mode toggle (care vs prevention)
+    const modeCare = document.getElementById("modeCare");
+    const modePrev = document.getElementById("modePrev");
+    const modeText = document.getElementById("modeText");
+
+    function setMode(mode) {
+      if (mode === "care") {
+        modeCare.classList.add("active");
+        modePrev.classList.remove("active");
+        modeText.innerHTML =
+          'In this mode, focus more on the <b>“Warning signs”</b> and <b>“Immediate care”</b> rows inside each card. ' +
+          'If you see multiple red flag signs, do not continue hard training.';
+      } else {
+        modePrev.classList.add("active");
+        modeCare.classList.remove("active");
+        modeText.innerHTML =
+          'In this mode, focus more on the <b>“Prevention / future”</b> lines in each card. ' +
+          'Treat them like a to-do list so the same injuries don’t return every season.';
+      }
+    }
+
+    modeCare.addEventListener("click", () => setMode("care"));
+    modePrev.addEventListener("click", () => setMode("prevention"));
+
+    // Sport filter
+    const sportButtons = document.querySelectorAll(".sport-filter-btn");
+    const sportBlocks = document.querySelectorAll(".sport-block");
+    const filterNote = document.getElementById("filterNote");
+
+    function setFilter(sport) {
+      sportButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-sport") === sport);
+      });
+
+      sportBlocks.forEach(block => {
+        if (sport === "all" || block.getAttribute("data-sport") === sport) {
+          block.style.display = "block";
+        } else {
+          block.style.display = "none";
+        }
+      });
+
+      if (sport === "all") {
+        filterNote.innerHTML = 'Showing injuries for <b>all sports</b>. Pick one sport to see only that block.';
+      } else {
+        const names = {
+          badminton: "Badminton",
+          tt: "Table Tennis",
+          sprint: "100m Sprint",
+          football: "Football",
+          cricket: "Cricket",
+          tennis: "Lawn Tennis"
+        };
+        filterNote.innerHTML = 'Showing injuries for <b>' + (names[sport] || "this sport") + '</b> only.';
+      }
+    }
+
+    sportButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        setFilter(btn.getAttribute("data-sport"));
+      });
+    });
+
+    // Injury card toggles
+    const injuryCards = document.querySelectorAll(".injury-card");
+    injuryCards.forEach(card => {
+      const toggle = card.querySelector(".injury-toggle");
+      card.addEventListener("click", (e) => {
+        // Only ignore if we later add buttons inside
+        card.classList.toggle("open");
+      });
+      if (toggle) {
+        toggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          card.classList.toggle("open");
+        });
+      }
+    });
+
+    // Initial states
+    setMode("care");
+    setFilter("all");
+  </script>
+</body>
+</html>

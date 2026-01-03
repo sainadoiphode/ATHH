@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AthletesPulse | India Sports Access Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #030415;
+      --card-bg: #070819;
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --accent: #4eb5ff;
+      --accent-2: #ff914d;
+      --accent-soft: rgba(78, 181, 255, 0.18);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #18224a 0, #030415 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(3, 4, 18, 0.98), rgba(3, 4, 18, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(78, 181, 255, 0.8);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 50px;
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent);
+      color: #02010a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(78, 181, 255, 0.7);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 50px;
+    }
+
+    @media (max-width: 780px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050516;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      padding: 24px 0 20px;
+      background: radial-gradient(circle at top left, rgba(78, 181, 255, 0.3), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(255, 145, 77, 0.25), transparent 60%),
+                  linear-gradient(135deg, #050518 0, #050515 45%, #080620 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 2.4fr 2.1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      padding: 4px 11px;
+      border-radius: 50px;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(3, 6, 24, 0.9);
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(78, 181, 255, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 3.7vw, 40px);
+      font-weight: 700;
+      margin: 14px 0 6px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #4eb5ff, #ff914d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 10px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--muted);
+    }
+
+    .hero-map-card {
+      border-radius: 20px;
+      background: radial-gradient(circle at top, rgba(78, 181, 255, 0.25), transparent 55%),
+                  rgba(5, 6, 30, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      padding: 10px 11px 12px;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-map-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      border: 1px solid rgba(78, 181, 255, 0.45);
+      opacity: 0.6;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero-map-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-map-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .hero-map-img-wrap {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #02010a;
+      margin-bottom: 7px;
+    }
+
+    .hero-map-img-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 190px;
+      object-fit: cover;
+      opacity: 0.96;
+      transform: scale(1.03);
+      transition: 0.2s ease;
+    }
+
+    .hero-map-img-wrap.zoomed img {
+      transform: scale(1.07);
+      filter: saturate(1.1);
+    }
+
+    .hero-map-tag {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 50px;
+      background: rgba(0, 0, 0, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .legend-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.north { background: #4eb5ff; }
+    .legend-dot.south { background: #ff914d; }
+    .legend-dot.west { background: #ffd166; }
+    .legend-dot.east { background: #9b7bff; }
+    .legend-dot.central { background: #5fffd3; }
+    .legend-dot.ne { background: #ff6fae; }
+
+    /* FILTER BAR */
+    .filters-bar {
+      padding: 10px 0 8px;
+      background: #050516;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .filters-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filters-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .zone-btn {
+      border-radius: 50px;
+      padding: 6px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s ease;
+    }
+
+    .zone-btn.active {
+      background: linear-gradient(135deg, #4eb5ff, #ff914d);
+      border-color: transparent;
+      color: #02010a;
+      box-shadow: 0 12px 28px rgba(78, 181, 255, 0.5);
+    }
+
+    .filter-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      padding: 18px 0 24px;
+      background: linear-gradient(180deg, rgba(8, 8, 33, 0.98), rgba(5, 5, 22, 0.98));
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2.6fr 2.1fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background: rgba(3, 5, 26, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      padding: 12px 12px 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* FACILITY GRID */
+    .facilities-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .facility-card {
+      border-radius: 15px;
+      background: radial-gradient(circle at top, rgba(78, 181, 255, 0.18), transparent 65%),
+                  rgba(7, 9, 32, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 8px 9px 9px;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: 0.16s ease;
+    }
+
+    .facility-card:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+      border-color: var(--accent);
+    }
+
+    .fac-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .fac-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .fac-zone {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .fac-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 3px;
+      font-size: 10px;
+    }
+
+    .fac-tag {
+      padding: 2px 7px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+    }
+
+    .fac-tag.sport {
+      border-color: rgba(78, 181, 255, 0.7);
+      color: var(--accent);
+    }
+
+    .fac-body {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .fac-foot {
+      font-size: 11px;
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .fac-pill {
+      padding: 2px 7px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 10px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .empty-msg {
+      font-size: 12px;
+      color: #ff9b9b;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* RIGHT: MAP + TIPS */
+    .map-main-wrap {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #02010a;
+      margin-top: 6px;
+      box-shadow: var(--shadow);
+    }
+
+    .map-main-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      opacity: 0.96;
+      transform: scale(1.03);
+    }
+
+    .map-overlay-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px 10px;
+      font-size: 11px;
+      background: linear-gradient(180deg, rgba(2, 0, 12, 0), rgba(2, 0, 12, 0.96));
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+
+    .dot-small {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4eb5ff;
+    }
+
+    .tips-list {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .tips-list ul {
+      padding-left: 18px;
+      margin-top: 4px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 12px 0 14px;
+      background: #02010a;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <img src="logo.jpg" alt="AthletesPulse" class="logo-img">
+        <div>
+          <div class="logo-text-main">AthletesPulse</div>
+          <div class="logo-text-sub">India Sports Access Map</div>
+        </div>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html">Fitness Tests</a>
+        <a href="health.html">Health Hub</a>
+        <a href="diet.html">Diet</a>
+        <a href="scholarships.html">Scholarships</a>
+        <a href="india-map.html" class="active">India Map</a>
+      </nav>
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-dot"></span>
+          Where do young athletes actually play in India?
+        </div>
+        <h1 class="hero-title">
+          An <span>India-wide view</span> of common sports spaces.
+        </h1>
+        <p class="hero-subtitle">
+          Different states look different, but the basic pattern repeats: public grounds, school fields, municipal
+          stadiums, indoor halls and private turfs. This page shows <b>typical examples</b> by region.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">North · South · East · West · Central · North-East</div>
+          <div class="pill">Cricket · Football · Badminton · TT · Tennis · Running</div>
+        </div>
+      </div>
+      <aside class="hero-map-card">
+        <div class="hero-map-header">
+          <div class="hero-map-title">INDIA // SPORTS GRID</div>
+          <div class="hero-map-subtitle" id="regionLabel">Viewing: All India</div>
+        </div>
+        <div class="hero-map-img-wrap" id="heroMapWrap">
+          <img src="map.jpg" alt="India sports map">
+          <div class="hero-map-tag">Illustrative map of India · For concept only</div>
+        </div>
+        <div class="hero-map-legend">
+          <span class="legend-pill"><span class="legend-dot north"></span>North India</span>
+          <span class="legend-pill"><span class="legend-dot south"></span>South India</span>
+          <span class="legend-pill"><span class="legend-dot east"></span>East India</span>
+          <span class="legend-pill"><span class="legend-dot west"></span>West India</span>
+          <span class="legend-pill"><span class="legend-dot central"></span>Central belt</span>
+          <span class="legend-pill"><span class="legend-dot ne"></span>North-East</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="filters-bar">
+    <div class="container">
+      <div class="filters-inner">
+        <div class="filters-left">
+          <span class="filter-label">Filter by region:</span>
+          <div class="filter-buttons">
+            <button class="zone-btn active" data-zone="all">All India</button>
+            <button class="zone-btn" data-zone="north">North</button>
+            <button class="zone-btn" data-zone="south">South</button>
+            <button class="zone-btn" data-zone="east">East</button>
+            <button class="zone-btn" data-zone="west">West</button>
+            <button class="zone-btn" data-zone="central">Central</button>
+            <button class="zone-btn" data-zone="ne">North-East</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-note" id="filterNote">
+        Showing facility examples across <b>all regions</b>. Use buttons to focus on one part of India.
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container layout">
+      <section class="card">
+        <h2 class="card-title">Typical sports facility patterns by region</h2>
+        <p class="card-sub">
+          These are <b>generic examples</b> based on how Indian cities and towns usually develop sports spaces.
+        </p>
+        <div class="facilities-list" id="facilitiesList">
+          <article class="facility-card" data-zone="north">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">District cricket grounds & school fields</div>
+                <div class="fac-zone">North India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Cricket</span>
+              <span class="fac-tag sport">Football</span>
+              <span class="fac-tag">School tournaments · coaching nets</span>
+            </div>
+            <div class="fac-body">
+              Many districts in the north have <b>large open grounds</b> used for cricket, basic football and athletics.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: public / school-managed</span>
+              <span class="fac-pill">Good for: team practice & fitness runs</span>
+            </div>
+          </article>
+          <article class="facility-card" data-zone="south">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">Multi-sport municipal stadiums</div>
+                <div class="fac-zone">South India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Football</span>
+              <span class="fac-tag sport">Athletics</span>
+              <span class="fac-tag">Kabaddi · local tournaments</span>
+            </div>
+            <div class="fac-body">
+              Many southern cities have <b>stadiums with football fields, basic tracks and open spaces</b>.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: permission / event-based</span>
+              <span class="fac-pill">Good for: organised competition</span>
+            </div>
+          </article>
+          <article class="facility-card" data-zone="east">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">School grounds & community fields</div>
+                <div class="fac-zone">East India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Cricket</span>
+              <span class="fac-tag sport">Football</span>
+              <span class="fac-tag">General games</span>
+            </div>
+            <div class="fac-body">
+              In many eastern states, <b>school and community grounds</b> act as primary spaces for youth sports.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: school / local body</span>
+              <span class="fac-pill">Good for: beginner to intermediate play</span>
+            </div>
+          </article>
+          <article class="facility-card" data-zone="west">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">Cricket turfs & box-cricket setups</div>
+                <div class="fac-zone">West India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Cricket</span>
+              <span class="fac-tag">Night matches · leagues</span>
+            </div>
+            <div class="fac-body">
+              In western states, <b>artificial cricket turfs and box-cricket grounds</b> are popular for coaching.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: hourly booking</span>
+              <span class="fac-pill">Good for: match practice</span>
+            </div>
+          </article>
+          <article class="facility-card" data-zone="central">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">State-run sports hostels & grounds</div>
+                <div class="fac-zone">Central India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Multi-sport</span>
+              <span class="fac-tag">Residential trainees</span>
+            </div>
+            <div class="fac-body">
+              Some central regions have <b>state-run sports hostels and attached grounds</b>.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: selection-based</span>
+              <span class="fac-pill">Good for: serious long-term training</span>
+            </div>
+          </article>
+          <article class="facility-card" data-zone="ne">
+            <div class="fac-header">
+              <div>
+                <div class="fac-name">Football-dominant community fields</div>
+                <div class="fac-zone">North-East India</div>
+              </div>
+            </div>
+            <div class="fac-tags">
+              <span class="fac-tag sport">Football</span>
+              <span class="fac-tag">Local clubs · school teams</span>
+            </div>
+            <div class="fac-body">
+              In many parts of the north-east, <b>football is a major sport</b>.
+            </div>
+            <div class="fac-foot">
+              <span class="fac-pill">Access: local clubs / schools</span>
+              <span class="fac-pill">Good for: match experience</span>
+            </div>
+          </article>
+        </div>
+        <div id="emptyMsg" class="empty-msg">
+          No facilities match that filter. Switch back to "All India".
+        </div>
+      </section>
+      <section class="card">
+        <h2 class="card-title">How athletes usually find real grounds & courts</h2>
+        <p class="card-sub">
+          This page gives a <b>pattern-level view for India</b>. To actually train somewhere, players combine
+          <b>online search</b> with <b>local information</b>.
+        </p>
+        <div class="map-main-wrap">
+          <img src="map.jpg" alt="India map sports overview">
+          <div class="map-overlay-strip">
+            <span><span class="dot-small"></span>Illustration of Indian regions where sports facilities cluster</span>
+            <span>Use maps/apps to zoom into your own city, town or village.</span>
+          </div>
+        </div>
+        <div class="tips-list">
+          <ul>
+            <li>Search maps/apps with terms like <b>"cricket ground near me"</b>, <b>"badminton academy near me"</b>.</li>
+            <li>Ask <b>PE teachers, local coaches, senior players</b> – they know active grounds and halls.</li>
+            <li>Check <b>government and municipal websites</b> for stadiums and sports complexes.</li>
+            <li>Many places have <b>cheaper morning slots</b> and busier evening slots.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        AthletesPulse – India Sports Access · Concept view of how sports spaces spread across the country.
+      </div>
+      <div class="footer-links">
+        <a href="health.html">See injury tips</a>
+        <a href="diet.html">Check diet guide</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Mobile nav toggle
+      $('#navToggle').click(() => $('#navLinks').toggleClass('open'));
+      
+      // Region data
+      const regionData = {
+        all: { text: 'All India', note: 'Showing facility examples across <b>all regions</b>. Use buttons to focus on one part of India.' },
+        north: { text: 'North India', note: 'Showing facility examples for <b>North India</b>.' },
+        south: { text: 'South India', note: 'Showing facility examples for <b>South India</b>.' },
+        east: { text: 'East India', note: 'Showing facility examples for <b>East India</b>.' },
+        west: { text: 'West India', note: 'Showing facility examples for <b>West India</b>.' },
+        central: { text: 'Central India', note: 'Showing facility examples for <b>Central India</b>.' },
+        ne: { text: 'North-East India', note: 'Showing facility examples for <b>North-East India</b>.' }
+      };
+      
+      // Filter functionality
+      $('.zone-btn').click(function() {
+        const zone = $(this).data('zone');
+        
+        // Update active button
+        $('.zone-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        // Filter cards
+        const $cards = $('.facility-card');
+        const $emptyMsg = $('#emptyMsg');
+        
+        if (zone === 'all') {
+          $cards.show();
+          $emptyMsg.hide();
+        } else {
+          $cards.hide();
+          $cards.filter(`[data-zone="${zone}"]`).show();
+          $emptyMsg.toggle($cards.filter(`[data-zone="${zone}"]`).length === 0);
+        }
+        
+        // Update UI text
+        $('#regionLabel').text(`Viewing: ${regionData[zone].text}`);
+        $('#filterNote').html(regionData[zone].note);
+        
+        // Toggle zoom effect
+        const $heroMap = $('#heroMapWrap');
+        zone === 'all' ? $heroMap.removeClass('zoomed') : $heroMap.addClass('zoomed');
+      });
+      
+      // Add keyboard shortcuts
+      $(document).keydown(function(e) {
+        const keyMap = {
+          '1': 'all', '2': 'north', '3': 'south', 
+          '4': 'east', '5': 'west', '6': 'central', '7': 'ne'
+        };
+        if (keyMap[e.key]) {
+          $(`.zone-btn[data-zone="${keyMap[e.key]}"]`).click();
+        }
+      });
+      
+      // Add hover effect to facility cards
+      $('.facility-card').hover(
+        function() { $(this).css('transform', 'translateY(-1px) scale(1.01)'); },
+        function() { $(this).css('transform', 'translateY(0) scale(1)'); }
+      );
+    });
+  </script>
+</body>
+</html>

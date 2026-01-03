@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AthletesPulse | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #0b1024;
+      --accent: #00e0ff;
+      --accent-soft: rgba(0, 224, 255, 0.16);
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #151b35 0, #050816 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(5, 8, 22, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(0, 224, 255, 0.6);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 50px;
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent);
+      color: #02010a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(0, 224, 255, 0.4);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 50px;
+    }
+
+    @media (max-width: 780px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050816;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 26px 0 32px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.75), rgba(5, 8, 22, 0.94)), url("bg1.jpg");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.8;
+      z-index: -2;
+    }
+
+    .hero-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.24), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(255, 184, 0, 0.18), transparent 60%);
+      z-index: -1;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 3.2fr 2.4fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid var(--accent-soft);
+      background: rgba(3, 8, 30, 0.9);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .hero-title {
+      font-size: clamp(30px, 4.1vw, 42px);
+      font-weight: 700;
+      margin: 14px 0 8px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #00e0ff, #ffb800);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      max-width: 520px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 50px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      border-radius: 50px;
+      padding: 9px 18px;
+      border: none;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: 0.18s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00e0ff, #007bff);
+      color: #02010a;
+      box-shadow: 0 18px 35px rgba(0, 224, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 45px rgba(0, 224, 255, 0.55);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(0, 224, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .hero-card {
+      border-radius: 22px;
+      padding: 14px;
+      background: rgba(3, 8, 30, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* MODULES SECTION */
+    main {
+      flex: 1;
+    }
+
+    .section {
+      padding: 24px 0 26px;
+      background: linear-gradient(180deg, rgba(8, 13, 33, 0.95), rgba(5, 8, 22, 0.98));
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 430px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .module-card {
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.16), #050818);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: 0.16s ease;
+    }
+
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.85);
+      border-color: rgba(0, 224, 255, 0.6);
+    }
+
+    .module-chip {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .module-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .module-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .module-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .module-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .module-pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(3, 8, 30, 0.9);
+    }
+
+    /* FUTURE SCOPE */
+    .future-scope {
+      padding: 20px 0 26px;
+      background: #050816;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .future-card {
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top right, rgba(255, 184, 0, 0.14), #050818);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .future-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .future-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .future-toggle-btn {
+      border-radius: 50px;
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--accent);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .future-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .future-body {
+      font-size: 13px;
+      color: var(--muted);
+      display: none;
+      margin-top: 6px;
+    }
+
+    .future-body ul {
+      padding-left: 18px;
+      margin-top: 4px;
+    }
+
+    .future-body li {
+      margin-bottom: 4px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 14px 0 16px;
+      background: #02010a;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <img src="logo.jpg" alt="AthletesPulse" class="logo-img">
+        <div>
+          <div class="logo-text-main">AthletesPulse</div>
+          <div class="logo-text-sub">Pulse of Emerging Athletes</div>
+        </div>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html">Fitness Tests</a>
+        <a href="health.html">Health Hub</a>
+        <a href="diet.html">Diet</a>
+        <a href="scholarships.html">Scholarships</a>
+        <a href="pune-map.html">India Sports</a>
+      </nav>
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay-gradient"></div>
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-kicker">
+          <span class="hero-dot"></span>
+          Sports · Health · Pathways
+        </div>
+        <h1 class="hero-title">
+          A single pulse for <span>training, health & opportunity</span>.
+        </h1>
+        <p class="hero-subtitle">
+          AthletesPulse brings together <b>skill drills</b>, <b>fitness testing</b>,
+          <b>injury awareness</b>, <b>diet tips</b>, <b>scholarship info</b> and
+          <b>INDIA sports access</b> into one web platform.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">Digital Dojo – sport-wise drills</div>
+          <div class="pill">Simple fitness test calculator</div>
+          <div class="pill">Injury & diet guidance</div>
+          <div class="pill">Scholarships & India map (demo)</div>
+        </div>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" onclick="goTo('talent.html')">
+            Try Fitness Test <span>⟶</span>
+          </button>
+          <button class="btn btn-ghost" onclick="goTo('dojo.html')">
+            Enter Digital Dojo
+          </button>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">AthletesPulse Snapshot</div>
+        <div style="font-size:11px; color:var(--muted); margin-bottom:8px;">6 connected modules in one site</div>
+        <div style="border-radius:16px; padding:10px; background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.1);">
+          <div style="display:grid; gap:6px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Skill & Training</span>
+              <span style="font-size:11px; color:var(--accent);">Digital Dojo</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Fitness & Talent</span>
+              <span style="font-size:11px; color:#ffb800;">Field Test Calculator</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Care & Support</span>
+              <span style="font-size:11px; color:#ff7aa2;">Health · Diet · Scholarships</span>
+            </div>
+          </div>
+          <div style="height:6px; border-radius:50px; background:rgba(255,255,255,.12); overflow:hidden; margin:8px 0;">
+            <div style="height:100%; width:72%; background:linear-gradient(90deg,#00e0ff,#ffb800);"></div>
+          </div>
+          <div style="font-size:11px; color:var(--muted);">Future-ready for AI / GIS integration</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            Modules Overview
+          </div>
+          <h2 class="section-title">Everything connects back to the athlete.</h2>
+        </div>
+        <p class="section-sub">
+          Use the cards below to navigate to any part of AthletesPulse.
+          The goal is the same – help athletes train smarter, stay healthier and see more opportunities.
+        </p>
+      </div>
+      <div class="modules-grid">
+        <article class="module-card" onclick="goTo('dojo.html')">
+          <div class="module-chip">Module · Training</div>
+          <h3 class="module-title">Digital Dojo – Sport-wise Drills</h3>
+          <p class="module-desc">
+            Badminton, football, cricket, table tennis, lawn tennis and 100m sprint –
+            each with curated YouTube drills, descriptions and neon-highlighted sections.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">Badminton · Football · Cricket · TT · Tennis · Sprint</span>
+            <span class="module-link">Open Dojo ⟶</span>
+          </div>
+        </article>
+        <article class="module-card" onclick="goTo('talent.html')">
+          <div class="module-chip">Module · Analytics</div>
+          <h3 class="module-title">Fitness & Talent Tests</h3>
+          <p class="module-desc">
+            Simple 100m time, standing broad jump and push-up tests with realistic benchmarks
+            to estimate speed, power and strength for different age groups.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">Calculator · Benchmarks</span>
+            <span class="module-link">Try tests ⟶</span>
+          </div>
+        </article>
+        <article class="module-card" onclick="goTo('health.html')">
+          <div class="module-chip">Module · Health</div>
+          <h3 class="module-title">Health & Injury Hub</h3>
+          <p class="module-desc">
+            Per-sport common injuries, warning signs, immediate care and prevention tips.
+            Click to expand cards, filter by sport and learn when to rest vs. push.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">Injury cards · Filters</span>
+            <span class="module-link">Visit health hub ⟶</span>
+          </div>
+        </article>
+        <article class="module-card" onclick="goTo('diet.html')">
+          <div class="module-chip">Module · Nutrition</div>
+          <h3 class="module-title">Diet Suggestions</h3>
+          <p class="module-desc">
+            Age-based and sport-based diet suggestions with simple Indian food examples,
+            pre- and post-training ideas and hydration check for everyday athletes.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">U14 · U17 · 17+</span>
+            <span class="module-link">Plan your fuel ⟶</span>
+          </div>
+        </article>
+        <article class="module-card" onclick="goTo('scholarships.html')">
+          <div class="module-chip">Module · Pathways</div>
+          <h3 class="module-title">Scholarships & Colleges</h3>
+          <p class="module-desc">
+            Sample view of Indian sports scholarships.
+            Filter by level and see which paths match a youth athlete profile.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">Scholarships</span>
+            <span class="module-link">Explore pathways ⟶</span>
+          </div>
+        </article>
+        <article class="module-card" onclick="goTo('pune-map.html')">
+          <div class="module-chip">Module · Planning</div>
+          <h3 class="module-title">India Sports Access (Demo)</h3>
+          <p class="module-desc">
+            Sample data showing different regions in India, their basic sports
+            facilities, suggested sports focus and development priority levels.
+          </p>
+          <div class="module-footer">
+            <span class="module-pill">Sample planning data</span>
+            <span class="module-link">View map ⟶</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="future-scope">
+    <div class="container">
+      <div class="future-card">
+        <div class="future-header">
+          <div>
+            <div class="tag">
+              <span class="tag-dot"></span>
+              Project Notes
+            </div>
+            <h3 class="future-title">Future scope: where AthletesPulse can go next.</h3>
+          </div>
+          <button class="future-toggle-btn" id="futureToggle">
+            Show future scope <span>▼</span>
+          </button>
+        </div>
+        <div class="future-body" id="futureBody">
+          <p>
+            This FY project focuses on the <b>front-end experience</b> – forms, interactions and
+            structured information. The same interface can later be connected to:
+          </p>
+          <ul>
+            <li><b>AI video analysis</b> – using pose estimation to assess sprinting, jumping and shots.</li>
+            <li><b>Data-backed injury prediction</b> – using real athlete datasets instead of simple rules.</li>
+            <li><b>Real scholarship databases</b> – integration with official government and college portals.</li>
+            <li><b>GIS sports maps</b> – live district-level facility mapping for planning new grounds.</li>
+          </ul>
+          <p style="margin-top:6px;">
+            For now, AthletesPulse stays lightweight and easy to run in a browser with only HTML, CSS and JavaScript.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2025 AthletesPulse · Front-end prototype built with HTML, CSS & JavaScript.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html">Fitness Tests</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Mobile nav toggle
+      $('#navToggle').click(() => $('#navLinks').toggleClass('open'));
+      
+      // Navigation helper
+      window.goTo = function(page) {
+        window.location.href = page;
+      };
+      
+      // Future scope toggle
+      $('#futureToggle').click(function() {
+        const $body = $('#futureBody');
+        const isVisible = $body.is(':visible');
+        $body.toggle();
+        $(this).html(isVisible ? 'Show future scope <span>▼</span>' : 'Hide future scope <span>▲</span>');
+      });
+      
+      // Add keyboard shortcuts
+      $(document).keydown(function(e) {
+        if (e.key === '1') goTo('dojo.html');
+        if (e.key === '2') goTo('talent.html');
+        if (e.key === '3') goTo('health.html');
+        if (e.key === '4') goTo('diet.html');
+        if (e.key === '5') goTo('scholarships.html');
+        if (e.key === '6') goTo('pune-map.html');
+      });
+    });
+  </script>
+</body>
+</html>

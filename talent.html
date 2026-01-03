@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AthletesPulse | Fitness & Talent Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #050818;
+      --text: #f5f7ff;
+      --muted: #9ea4c7;
+      --accent: #8bff6b;
+      --accent-soft: rgba(139, 255, 107, 0.18);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #151b35 0, #050816 45%, #02010a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(5, 8, 22, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(139, 255, 107, 0.8);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 50px;
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent);
+      color: #02010a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(139, 255, 107, 0.7);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 50px;
+    }
+
+    @media (max-width: 780px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        border-radius: 14px;
+        background: #050816;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .nav-toggle {
+        display: flex;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      padding: 22px 0 18px;
+      background: radial-gradient(circle at top left, rgba(139, 255, 107, 0.22), rgba(5, 8, 22, 0.98));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 2.6fr 2.1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(3, 6, 24, 0.9);
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(139, 255, 107, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 3.6vw, 38px);
+      font-weight: 700;
+      margin: 14px 0 8px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #8bff6b, #00e0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 12px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--muted);
+    }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      padding: 20px 0 26px;
+      background: linear-gradient(180deg, rgba(8, 13, 33, 0.98), rgba(5, 8, 22, 0.98));
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2.1fr 2.1fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background: rgba(3, 6, 24, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      padding: 12px 12px 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 12px;
+    }
+
+    select,
+    input[type="number"] {
+      background: rgba(1, 4, 20, 0.98);
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 7px 11px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .btn {
+      border-radius: 50px;
+      padding: 7px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-size: 11px;
+      transition: 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8bff6b, #00e0ff);
+      color: #02010a;
+      border-color: transparent;
+      box-shadow: 0 16px 35px rgba(139, 255, 107, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 45px rgba(139, 255, 107, 0.6);
+    }
+
+    .btn-outline {
+      color: var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: rgba(139, 255, 107, 0.08);
+    }
+
+    .result-box {
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 10px;
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .badge {
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(5, 8, 30, 0.98);
+    }
+
+    .badge-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+    }
+
+    .badge-value {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 50px;
+      margin-left: 4px;
+    }
+
+    .tag-excellent {
+      color: #00ffb7;
+      border: 1px solid rgba(0, 255, 183, 0.7);
+    }
+
+    .tag-good {
+      color: #ffe45e;
+      border: 1px solid rgba(255, 228, 94, 0.7);
+    }
+
+    .tag-average {
+      color: #8bff6b;
+      border: 1px solid rgba(139, 255, 107, 0.7);
+    }
+
+    .tag-below {
+      color: #ff7aa2;
+      border: 1px solid rgba(255, 122, 162, 0.7);
+    }
+
+    .sports-pill {
+      display: inline-block;
+      margin: 2px 4px 0 0;
+      padding: 3px 8px;
+      font-size: 11px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .alert {
+      font-size: 11px;
+      color: #ff9b9b;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* BENCHMARKS */
+    .bench-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .bench-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .bench-toggle-btn {
+      border-radius: 50px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--accent);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bench-body {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .bench-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 11px;
+    }
+
+    .bench-table th,
+    .bench-table td {
+      padding: 4px 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: left;
+    }
+
+    .bench-table th {
+      color: var(--text);
+      font-weight: 500;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 12px 0 14px;
+      background: #02010a;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <img src="logo.jpg" alt="AthletesPulse" class="logo-img">
+        <div>
+          <div class="logo-text-main">AthletesPulse</div>
+          <div class="logo-text-sub">Fitness & Talent Tests</div>
+        </div>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="talent.html" class="active">Fitness Tests</a>
+        <a href="health.html">Health Hub</a>
+        <a href="diet.html">Diet</a>
+        <a href="scholarships.html">Scholarships</a>
+        <a href="pune-map.html">India Sports</a>
+      </nav>
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-dot"></span>
+          Field-based fitness checks
+        </div>
+        <h1 class="hero-title">
+          Turn simple tests into a <span>sport profile</span>.
+        </h1>
+        <p class="hero-subtitle">
+          No lab, no sensors. Just your age group, 100m time, standing broad jump and 1-minute push-ups.
+          AthletesPulse compares them to realistic benchmark ranges.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">Age-aware benchmarks (U14 · U17 · 17+)</div>
+          <div class="pill">Speed · Power · Strength breakdown</div>
+          <div class="pill">Sport suggestions from your scores</div>
+        </div>
+      </div>
+      <aside style="border-radius:18px;background:rgba(3,6,24,0.96);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);padding:10px 12px;font-size:12px">
+        <h3 style="font-size:14px;margin-bottom:4px">How to perform the tests</h3>
+        <ul style="padding-left:18px;color:var(--muted)">
+          <li><b>100m Time:</b> Sprint from a clear start line, time till finish.</li>
+          <li><b>Standing Broad Jump:</b> Stand behind a line, jump forward with both feet.</li>
+          <li><b>Push-ups:</b> Count full push-ups in 60 seconds.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <div class="container layout">
+      <section class="card">
+        <h2 class="card-title">Enter your test results</h2>
+        <p class="card-sub">
+          Fill in realistic values. If you haven't done the tests yet, complete them first.
+        </p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="ageGroup">Age group <span style="font-size:11px;color:var(--muted)">(choose closest)</span></label>
+            <select id="ageGroup">
+              <option value="">Select age group</option>
+              <option value="u14">U14 (up to 13 years)</option>
+              <option value="u17">U17 (14–16 years)</option>
+              <option value="17plus">17+ (college level)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="time100">100m sprint time (seconds) <span style="font-size:11px;color:var(--muted)">(full effort, flat ground)</span></label>
+            <input type="number" id="time100" min="8" max="40" step="0.1" placeholder="e.g. 15.2">
+          </div>
+
+          <div class="field">
+            <label for="broadJump">Standing broad jump distance (cm) <span style="font-size:11px;color:var(--muted)">(two-foot jump)</span></label>
+            <input type="number" id="broadJump" min="50" max="400" step="1" placeholder="e.g. 180">
+          </div>
+
+          <div class="field">
+            <label for="pushups">Push-ups in 1 minute <span style="font-size:11px;color:var(--muted)">(full range)</span></label>
+            <input type="number" id="pushups" min="0" max="100" step="1" placeholder="e.g. 28">
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="calcBtn">Calculate profile</button>
+          <button class="btn btn-outline" id="resetBtn">Clear</button>
+        </div>
+
+        <div id="formAlert" class="alert"></div>
+
+        <div class="result-box" id="resultBox">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Your performance snapshot</div>
+          <div class="result-grid">
+            <div class="badge" id="speedBadge">
+              <div class="badge-label">100m · Speed</div>
+              <div class="badge-value">
+                <span id="speedLabel">—</span>
+                <span class="badge-tag" id="speedTag"></span>
+              </div>
+            </div>
+            <div class="badge" id="powerBadge">
+              <div class="badge-label">Broad jump · Power</div>
+              <div class="badge-value">
+                <span id="powerLabel">—</span>
+                <span class="badge-tag" id="powerTag"></span>
+              </div>
+            </div>
+            <div class="badge" id="strengthBadge">
+              <div class="badge-label">Push-ups · Strength</div>
+              <div class="badge-value">
+                <span id="strengthLabel">—</span>
+                <span class="badge-tag" id="strengthTag"></span>
+              </div>
+            </div>
+          </div>
+          <p id="summaryText" style="margin-top:6px;font-size:12px;color:var(--muted)"></p>
+          <div style="margin-top:4px">
+            <span style="font-size:12px">Suggested sports focus:</span>
+            <div id="sportsSuggestions"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="bench-header">
+          <div>
+            <div class="bench-title">Benchmarks by age group</div>
+            <p class="card-sub">
+              These ranges are based on typical school and college performance levels.
+            </p>
+          </div>
+          <button class="bench-toggle-btn" id="benchToggle">Show tables <span>▼</span></button>
+        </div>
+
+        <div class="bench-body" id="benchBody">
+          <p><b>Legend:</b> "Excellent" ≈ strong current performance, "Good" ≈ above average, "Average" ≈ okay base, "Below average" ≈ needs more focused training.</p>
+
+          <h4 style="margin-top:8px;font-size:12px">100m sprint time (seconds)</h4>
+          <table class="bench-table">
+            <thead><tr><th>Age group</th><th>Excellent</th><th>Good</th><th>Average</th><th>Below average</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600">U14</td><td>≤ 14.5 s</td><td>14.6 – 16.0 s</td><td>16.1 – 18.5 s</td><td>&gt; 18.5 s</td></tr>
+              <tr><td style="font-weight:600">U17</td><td>≤ 13.0 s</td><td>13.1 – 14.5 s</td><td>14.6 – 16.5 s</td><td>&gt; 16.5 s</td></tr>
+              <tr><td style="font-weight:600">17+</td><td>≤ 12.5 s</td><td>12.6 – 14.0 s</td><td>14.1 – 16.0 s</td><td>&gt; 16.0 s</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="margin-top:10px;font-size:12px">Standing broad jump (cm)</h4>
+          <table class="bench-table">
+            <thead><tr><th>Age group</th><th>Excellent</th><th>Good</th><th>Average</th><th>Below average</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600">U14</td><td>≥ 190 cm</td><td>170 – 189 cm</td><td>150 – 169 cm</td><td>&lt; 150 cm</td></tr>
+              <tr><td style="font-weight:600">U17</td><td>≥ 220 cm</td><td>200 – 219 cm</td><td>180 – 199 cm</td><td>&lt; 180 cm</td></tr>
+              <tr><td style="font-weight:600">17+</td><td>≥ 230 cm</td><td>210 – 229 cm</td><td>190 – 209 cm</td><td>&lt; 190 cm</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="margin-top:10px;font-size:12px">Push-ups in 1 minute (count)</h4>
+          <table class="bench-table">
+            <thead><tr><th>Age group</th><th>Excellent</th><th>Good</th><th>Average</th><th>Below average</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600">U14</td><td>≥ 35</td><td>25 – 34</td><td>15 – 24</td><td>&lt; 15</td></tr>
+              <tr><td style="font-weight:600">U17</td><td>≥ 40</td><td>30 – 39</td><td>20 – 29</td><td>&lt; 20</td></tr>
+              <tr><td style="font-weight:600">17+</td><td>≥ 45</td><td>35 – 44</td><td>25 – 34</td><td>&lt; 25</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>AthletesPulse – Fitness & Talent Tests · Simple field data turned into a basic sport profile.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="dojo.html">Digital Dojo</a>
+        <a href="diet.html">See diet tips</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Mobile nav toggle
+      $('#navToggle').click(() => $('#navLinks').toggleClass('open'));
+      
+      // Benchmark toggle
+      $('#benchToggle').click(function() {
+        const $body = $('#benchBody');
+        const isVisible = $body.is(':visible');
+        $body.toggle();
+        $(this).html(isVisible ? 'Show tables <span>▼</span>' : 'Hide tables <span>▲</span>');
+      });
+      
+      // Classification data
+      const benchmarks = {
+        u14: {
+          sprint: [14.5, 16.0, 18.5],
+          jump: [190, 170, 150],
+          pushups: [35, 25, 15]
+        },
+        u17: {
+          sprint: [13.0, 14.5, 16.5],
+          jump: [220, 200, 180],
+          pushups: [40, 30, 20]
+        },
+        '17plus': {
+          sprint: [12.5, 14.0, 16.0],
+          jump: [230, 210, 190],
+          pushups: [45, 35, 25]
+        }
+      };
+      
+      // Classify function
+      function classify(value, thresholds, reverse = false) {
+        if (reverse) {
+          if (value <= thresholds[0]) return 'Excellent';
+          if (value <= thresholds[1]) return 'Good';
+          if (value <= thresholds[2]) return 'Average';
+          return 'Below average';
+        } else {
+          if (value >= thresholds[0]) return 'Excellent';
+          if (value >= thresholds[1]) return 'Good';
+          if (value >= thresholds[2]) return 'Average';
+          return 'Below average';
+        }
+      }
+      
+      // Tag class mapping
+      const tagClasses = {
+        'Excellent': 'tag-excellent',
+        'Good': 'tag-good',
+        'Average': 'tag-average',
+        'Below average': 'tag-below'
+      };
+      
+      // Sport suggestions based on profile
+      const sportSuggestions = {
+        speed: ['100m Sprint', 'Football (wing/forward)', 'Badminton', 'Lawn Tennis'],
+        power: ['Football', 'Cricket (fielding & batting power)', 'Lawn Tennis', 'Badminton'],
+        strength: ['Football (defence/midfield)', 'Cricket (fast bowling)', 'Racquet sports with long rallies'],
+        speedPower: ['100m Sprint', 'Football', 'Badminton', 'Lawn Tennis'],
+        speedStrength: ['Football', 'Cricket', 'Short explosive rallies in TT and Lawn Tennis'],
+        powerStrength: ['Cricket', 'Football', 'Racquet sports with aggressive baseline play'],
+        balanced: ['Football', 'Cricket', 'Badminton', 'Table Tennis', 'Lawn Tennis', '100m Sprint (with focused training)']
+      };
+      
+      // Calculate button
+      $('#calcBtn').click(function() {
+        const ageGroup = $('#ageGroup').val();
+        const time100 = parseFloat($('#time100').val());
+        const jump = parseFloat($('#broadJump').val());
+        const pushups = parseInt($('#pushups').val());
+        
+        const $alert = $('#formAlert');
+        $alert.hide();
+        
+        if (!ageGroup || isNaN(time100) || isNaN(jump) || isNaN(pushups)) {
+          $alert.show().text('Please fill all four values with realistic numbers before calculating.');
+          return;
+        }
+        
+        const ageData = benchmarks[ageGroup];
+        if (!ageData) return;
+        
+        // Classify each metric
+        const speedRating = classify(time100, ageData.sprint, true);
+        const powerRating = classify(jump, ageData.jump, false);
+        const strengthRating = classify(pushups, ageData.pushups, false);
+        
+        // Update UI
+        $('#speedLabel').text(speedRating);
+        $('#powerLabel').text(powerRating);
+        $('#strengthLabel').text(strengthRating);
+        
+        $('#speedTag').attr('class', 'badge-tag ' + tagClasses[speedRating]).text(speedRating);
+        $('#powerTag').attr('class', 'badge-tag ' + tagClasses[powerRating]).text(powerRating);
+        $('#strengthTag').attr('class', 'badge-tag ' + tagClasses[strengthRating]).text(strengthRating);
+        
+        // Determine focus area
+        const scores = {speed: speedRating, power: powerRating, strength: strengthRating};
+        const scoreValues = {Excellent: 3, Good: 2, Average: 1, 'Below average': 0};
+        const speedScore = scoreValues[speedRating];
+        const powerScore = scoreValues[powerRating];
+        const strengthScore = scoreValues[strengthRating];
+        
+        let focusArea = 'balanced';
+        if (speedScore > powerScore && speedScore > strengthScore) focusArea = 'speed';
+        else if (powerScore > speedScore && powerScore > strengthScore) focusArea = 'power';
+        else if (strengthScore > speedScore && strengthScore > powerScore) focusArea = 'strength';
+        else if (speedScore === powerScore && speedScore > strengthScore) focusArea = 'speedPower';
+        else if (speedScore === strengthScore && speedScore > powerScore) focusArea = 'speedStrength';
+        else if (powerScore === strengthScore && powerScore > speedScore) focusArea = 'powerStrength';
+        
+        // Generate summary
+        const summaries = {
+          speed: 'Your strongest area right now is <b>speed over 100m</b>.',
+          power: 'Your strongest area right now is <b>explosive power</b> from the broad jump.',
+          strength: 'Your strongest area right now is <b>upper body strength</b> from push-ups.',
+          speedPower: 'You\'re showing a <b>good mix of speed and power</b> – a strong base for many field sports.',
+          speedStrength: 'You have <b>speed and strength together</b> – ideal for contact and high-intensity roles.',
+          powerStrength: 'You have <b>power and strength</b> – great for longer rallies and repeated efforts.',
+          balanced: 'Your scores are fairly <b>balanced across speed, power and strength</b>.'
+        };
+        
+        $('#summaryText').html(summaries[focusArea]);
+        
+        // Display sports suggestions
+        const $sportsDiv = $('#sportsSuggestions');
+        $sportsDiv.empty();
+        sportSuggestions[focusArea].forEach(sport => {
+          $sportsDiv.append(`<span class="sports-pill">${sport}</span>`);
+        });
+        
+        // Show result box
+        $('#resultBox').show();
+      });
+      
+      // Reset button
+      $('#resetBtn').click(function() {
+        $('#ageGroup, #time100, #broadJump, #pushups').val('');
+        $('#formAlert').hide();
+        $('#resultBox').hide();
+      });
+      
+      // Add keyboard shortcuts
+      $(document).keydown(function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          $('#calcBtn').click();
+        }
+        if (e.key === 'Escape') {
+          $('#resetBtn').click();
+        }
+      });
+      
+      // Form auto-save
+      $('select, input').on('change input', function() {
+        const formData = {
+          age: $('#ageGroup').val(),
+          time100: $('#time100').val(),
+          jump: $('#broadJump').val(),
+          pushups: $('#pushups').val()
+        };
+        localStorage.setItem('fitnessForm', JSON.stringify(formData));
+      });
+      
+      // Load saved form state
+      const saved = localStorage.getItem('fitnessForm');
+      if (saved) {
+        const formData = JSON.parse(saved);
+        $('#ageGroup').val(formData.age || '');
+        $('#time100').val(formData.time100 || '');
+        $('#broadJump').val(formData.jump || '');
+        $('#pushups').val(formData.pushups || '');
+      }
+    });
+  </script>
+</body>
+</html>
